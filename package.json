@@ -1,0 +1,23 @@
+{
+  "name": "fnfy",
+  "version": "1.0.0",
+  "description": "Functional library for often-used helpers and methods.",
+  "main": "fnfy",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidrayoussef/funcify.git"
+  },
+  "keywords": [
+    "funcify",
+    "fnfy"
+  ],
+  "author": "David Ra Youssef <davidragraphics@gmail.com> (http://davidra.co/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/davidrayoussef/funcify/issues"
+  },
+  "homepage": "https://github.com/davidrayoussef/funcify#readme"
+}
