@@ -1,1 +1,2 @@
-funcifyJS
+# funcifyr.js 
+funcifyr.js (pronounced Funkifier) is partly a joke on the *ify* suffix added everywhere, partly a resource for myself to reference often-used functions, and maybe even partly a tool that can be used by somebody somewhere for something sometime.
