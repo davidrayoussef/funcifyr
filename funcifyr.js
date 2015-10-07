@@ -3,9 +3,12 @@
 
   window.funcifyr = {
 
-    animify: function() {},
-
-    composify: function() {},
+    arrayify: function(collection) {
+    // Converts Array-like object, HTMLCollection or NodeList that's not mappable into Array
+      return Array.from ? Array.from(collection) : Array.apply(null, collection).map(function(v) {
+        return v;
+      });
+    },
 
     colorify: function() {
     // returns a random hex color
@@ -16,13 +19,41 @@
       );
     },
 
-    currify: function() {},
+    composify: function(fn1, fn2) {
+    // creates a function from two functions
+      return function composified() {
+        return fn1.call(this, fn2.apply(this, arguments));
+      }
+    },
 
-    konamify: function() {},
+    currify: function(fn, a) {
+    // creates copy of function with preset first parameter
+      return function currified(b) {
+        return fn.call(this, a, b);
+      }
+    },
+
+    defuncify: function(fn) {
+    // turns a function into a method  
+      return function defuncified(a, b) {
+        return fn.call(this, a, b);
+      }
+    },
+
+    fastify: function(mediaElementId) {
+    // increases HTML5 video or audio speed by .1
+      document.getElementById(mediaElementId).playbackRate += 0.1;
+    },
+
+    funcify: function(obj, methodString) {
+    // turns a method into a function
+      return function funcified(a, b) {
+        return obj[methodString].call(obj, a, b);
+      }
+    },
 
     mapify: function(collection, callback) {
-    // maps over an Array-like object, HTMLCollection or NodeList that's not mappable
-    // if callback function passed, runs callback on each element
+    // maps over an unmappable Array-like collection and runs a callback
       return Array.apply(null, collection).map(function(v) {
         return callback ? callback(v) : v;
       });
@@ -40,7 +71,13 @@
       }).join('');
     },
 
-    shortify: function(obj, method) {},
+    schonfinkelify: function(fn) {
+    // a more general-purpose currify for arbitrary arity
+      var slice = Array.prototype.slice, args = slice.call(arguments, 1);
+      return function schonfinkeliied() {
+        return fn.apply(null, args.concat(slice.call(arguments)));
+      }
+    },
 
     slowify: function(mediaElementId) {
     // decreases HTML5 video or audio speed by .1
