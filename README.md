@@ -2,51 +2,39 @@
 funcifyr.js (pronounced Funkifier) is partly a joke on the *ify* suffix used everywhere, partly a resource for myself to reference oft-used functions, and partly a tool that might have some use for somebody.
 
 # tl;dr
-// converts NodeList into an Array
-funcifyr.arrayify()
 
-// returns random hex color
-funcifyr.colorify()
+```javascript
+funcifyr.arrayify() // converts NodeList into an Array
 
-// creates function from two functions
-funcifyr.composify()
+funcifyr.colorify() // returns random hex color
 
-// creates copy of a function with preset first parameter
-funcifyr.currify()
+funcifyr.composify() // creates function from two functions
 
-// turns function into a method  
-funcifyr.defuncify()
+funcifyr.currify() // creates copy of a function with preset first parameter
 
-// increases HTML5 video or audio speed
-funcifyr.fastify()
+funcifyr.defuncify() // turns function into a method
 
-// returns array prefilled with a value
-funcifyr.fillify()
+funcifyr.fastify() // increases HTML5 video or audio speed
 
-// flattens multidimensional arrays
-funcifyr.flattify()
+funcifyr.fillify() // returns array prefilled with a value
 
-// turns method into a function
-funcifyr.funcify()
+funcifyr.flattify() // flattens multidimensional arrays
 
-// maps over unmappable collection
-funcifyr.mapify()
+funcifyr.funcify() // turns method into a function
 
-// returns random integer 
-funcifyr.randomify()
+funcifyr.mapify() // maps over unmappable collection
 
-// repeats a string a number of times
-funcifyr.repeatify()
+funcifyr.randomify() // returns random integer 
 
-// a more general-purpose currify
-funcifyr.schonfinkelify()
+funcifyr.repeatify() // repeats a string a number of times
 
-// decreases HTML5 video or audio speed
-funcifyr.slowify()
+funcifyr.schonfinkelify() // a more general-purpose currify
 
-// removes dupicates
-funcifyr.uniqify()
+funcifyr.slowify() // decreases HTML5 video or audio speed
+
+funcifyr.uniqify() // removes dupicates
+```
 
 # TODO
 
-Instructions and examples to be added soon.
+Instructions and examples to add soon.
