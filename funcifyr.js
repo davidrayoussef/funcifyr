@@ -21,12 +21,12 @@
 
     // creates a function from two functions
     composify: function(fn1, fn2) {
-      return function composified() {
-        return fn1.call(this, fn2.apply(this, arguments));
+      return function composified(arg) {
+        return fn1(arg) && fn2(arg);
       }
     },
 
-    // creates copy of function with preset first parameter
+    // creates a copy of a function with a preset first parameter
     currify: function(fn, a) {
       return function currified(b) {
         return fn.call(this, a, b);
@@ -35,8 +35,8 @@
 
     // turns a function into a method  
     defuncify: function(fn) {
-      return function defuncified(a, b) {
-        return fn.call(this, a, b);
+      return function defuncified(a) {
+        return fn(this, a);
       }
     },
 
