@@ -12,7 +12,7 @@ funcifyr.fastify() // increases HTML5 video or audio speed
 funcifyr.fillify() // returns array prefilled with a value
 funcifyr.flattify() // flattens multidimensional arrays
 funcifyr.funcify() // turns method into a function
-funcifyr.mapify() // similar to arrayify, but runs a callback function on an unmappable collection
+funcifyr.mapify() // similar to arrayify, but runs a callback on an unmappable collection
 funcifyr.randomify() // returns random integer 
 funcifyr.repeatify() // repeats a string a number of times
 funcifyr.schonfinkelify() // a more general-purpose currify
@@ -24,12 +24,11 @@ funcifyr.uniqify() // removes dupicates
 *funcifyr.arrayify(collection)*
 
 The methods querySelectorAll(), getElementsByClassName() and getElementsByTagName() return HTMLCollections instead of arrays.
-
+```javascript
 <div class="one"></div>
 <div class="two"></div>
 <div class="three"></div>
 
-```javascript
 var elementCollection = document.querySelectorAll('div');
 elementCollection.forEach(function(el) { 
 	el.className += ' new-class';
@@ -37,31 +36,32 @@ elementCollection.forEach(function(el) {
 // Uncaught TypeError: elementCollection.forEach is not a function
 ```
 
-```javascript
-Use arrayify to turn them into arrays that can then be iterated over with .forEach, .map, .filter, etc. 
+Use arrayify to turn them into arrays that can then be iterated over with 
+.forEach, .map, .filter, etc. 
 
+```javascript
 var elementCollection = document.querySelectorAll('div');
 var iterableCollection = funcifyr.arrayify(elementCollection);
 iterableCollection.forEach(function(el) { 
 	el.className += ' new-class';
 });
-```
+
 <div class="one new-class"></div>
 <div class=​"two new-class">​</div>​
 <div class=​"three new-class">​</div>​
+```
 
 
 *funcifyr.colorify()*
 
 Returns a random hex color.
-
+```javascript
 <ul>
 	<li></li>
 	<li></li>
 	<li></li>
 </ul>
 
-```javascript
 var lis = funcifyr.arrayify(document.getElementsByTagName('li'));
 
 lis.map(function(li) {
@@ -69,20 +69,20 @@ lis.map(function(li) {
 	li.style.height = '200px';
 	li.style.background = funcifyr.colorify();
 });
-```
+
 <ul>
 	<li style="width: 200px; height: 200px; background: #D8B0FE;"></li>
 	<li style="width: 200px; height: 200px; background: #E9D26D;"></li>
 	<li style="width: 200px; height: 200px; background: #70F5C1;"></li>
 </ul>
+```
 
 
 *funcifyr.composify(fn1, fn2)*
 
 Composes a function from two functions. 
 
-E.g. You want to check if something is a string AND has more than 6 characters...
-
+e.g. You want to check if something is a string AND has more than 6 characters...
 ```javascript
 var isString = function(a) { return typeof a === 'string'; };
 var isLongerThanSix = function(b) { return b.length > 6;  };
@@ -96,8 +96,7 @@ isValid('funcify all the things'); // true
 
 *funcifyr.currify(fn, a)*
 
-Creates a copy of a function with a preset first parameter. Useful for creating functions where you know the first argument but not the rest.
-
+Creates a copy of a function with a preset first parameter. Useful for creating functions where you know the first argument but not the rest. Technically this should be called partialify, but currify sounds better.
 ```javascript
 function greeter(greet, greeting) { return greet + ', ' + greeting; }
 var englishGreet = funcifyr.currify(greeter, 'Hi');
@@ -108,7 +107,6 @@ englishGreet('how are you?'); // Hi, how are you?
 spanishGreet('how are you?'); // Hola, how are you?
 japaneseGreet('how are you?'); // Konnichiwa, how are you?
 ```
-Technically this should be called partialify, but currify sounds better.
 
 
 *funcifyr.defuncify(fn)*
