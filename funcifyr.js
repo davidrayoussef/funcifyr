@@ -59,8 +59,8 @@
 
     // turns a method into a function
     funcify: function(obj, methodString) {
-      return function funcified(a, b) {
-        return obj[methodString].call(obj, a, b);
+      return function funcified(arg) {
+        return obj[methodString].call(obj, arg);
       }
     },
 
