@@ -3,6 +3,13 @@
 
   window.funcifyr = {
 
+    // runs two predicate functions on an argument and returns true if both are true 
+    andify: function(fn1, fn2) {
+      return function andified(arg) {
+        return fn1(arg) && fn2(arg);
+      }
+    },
+
     // converts an Array-like object, HTMLCollection or NodeList that's not mappable into an Array
     arrayify: function(collection) {
       return Array.from ? Array.from(collection) : Array.apply(null, collection).map(function(v) {
@@ -21,8 +28,8 @@
 
     // creates a function from two functions
     composify: function(fn1, fn2) {
-      return function composified(arg) {
-        return fn1(arg) && fn2(arg);
+      return function composified() {
+        return fn1.call(this, fn2.apply(this, arguments));
       }
     },
 
@@ -40,6 +47,13 @@
       }
     },
 
+    // creates a negate function that returns true if result is false
+    falsify: function(fn) {
+      return function falsified() {
+        return !fn.apply(this, arguments);
+      }
+    },
+
     // increases HTML5 video or audio speed by 0.1
     fastify: function(mediaElementId) {
       document.getElementById(mediaElementId).playbackRate += 0.1;
@@ -47,12 +61,14 @@
 
     // returns an array prefilled with a value a number of times
     fillify: function(value, times) {
-      return Array.apply(null, Array(+times)).map(function() { return value });
+      return Array.apply(null, Array(+times)).map(function() { 
+        return value;
+      });
     },
 
     // Takes any number of arguments and multidimensional arrays and returns new array with results flattened
     flattify: function(){
-      return [].slice.call(arguments).reduce(function(a, b){              
+      return [].slice.call(arguments).reduce(function(a, b) {              
         return a.concat(Array.isArray(b) ? funcifyr.flattify.apply(null, b) : b);
       }, []);
     },
@@ -71,7 +87,21 @@
       });
     },
 
-    // returns random integer between min and max 
+    // runs two predicate functions on an argument, returns true if one OR the other is true 
+    orify: function(fn1, fn2) {
+      return function orified(arg) {
+        return fn1(arg) || fn2(arg);
+      }
+    },
+
+    // runs a function on the passed in results of another function
+    pipeify: function(fn1, fn2) {
+      return function pipeified() {
+        return fn2.call(this, fn1.apply(this, arguments));
+      }
+    },
+
+    // returns a random integer between min and max 
     randomify: function(min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min);
     },
