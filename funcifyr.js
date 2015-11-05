@@ -66,11 +66,19 @@
       });
     },
 
-    // Takes any number of arguments and multidimensional arrays and returns new array with results flattened
+    // takes any number of arguments and multidimensional arrays and returns new array with results flattened
     flattify: function(){
       return [].slice.call(arguments).reduce(function(a, b) {              
         return a.concat(Array.isArray(b) ? funcifyr.flattify.apply(null, b) : b);
       }, []);
+    },
+
+    // modifies method to return its context, used for method chaining
+    fluentify: function(methodBody) {
+      return function fluentified() {
+        var value = methodBody.apply(this, arguments);
+        return value === undefined ? this : value;
+      }
     },
 
     // turns a method into a function
@@ -80,11 +88,25 @@
       }
     },
 
+    // creates predicate function to test for numbers less than x
+    lessthanify: function(x) {
+      return function lessthanified(y) {
+        return y < x;
+      }
+    },
+
     // maps over an unmappable Array-like collection and runs a callback
     mapify: function(collection, callback) {
       return Array.apply(null, collection).map(function(v) {
         return callback ? callback(v) : v;
       });
+    },
+
+    // creates predicate function to test for numbers greater than x
+    morethanify: function(x) {
+      return function morethanified(y) {
+        return y > x;
+      }
     },
 
     // runs two predicate functions on an argument, returns true if one OR the other is true 
