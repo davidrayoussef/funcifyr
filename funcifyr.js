@@ -17,15 +17,6 @@
       });
     },
 
-    // returns a random hex color
-    colorify: function() {
-      return '#' + (
-        '0123456789ABCDEF'.split('').map(function(v,i,a) {
-          return a[Math.floor(Math.random() * 16)];
-        }).join('').slice(0,6)
-      );
-    },
-
     // creates a function from two functions
     composify: function(fn1, fn2) {
       return function composified() {
@@ -52,11 +43,6 @@
       return function falsified() {
         return !fn.apply(this, arguments);
       }
-    },
-
-    // increases HTML5 video or audio speed by 0.1
-    fastify: function(mediaElementId) {
-      document.getElementById(mediaElementId).playbackRate += 0.1;
     },
 
     // returns an array prefilled with a value a number of times
@@ -88,6 +74,24 @@
       }
     },
 
+    // plucks properties from array of objects
+    getify: function(prop) {
+      return function getified(arr) {
+        return arr.map(function(obj) {
+          return obj[prop];
+        });
+      };
+    },
+
+    // returns a random hex color
+    hexify: function() {
+      return '#' + (
+        '0123456789ABCDEF'.split('').map(function(v,i,a) {
+          return a[Math.floor(Math.random() * 16)];
+        }).join('').slice(0,6)
+      );
+    },
+    
     // creates predicate function to test for numbers less than x
     lessthanify: function(x) {
       return function lessthanified(y) {
@@ -141,11 +145,6 @@
       return function schonfinkeliied() {
         return fn.apply(null, args.concat(slice.call(arguments)));
       }
-    },
-
-    // decreases HTML5 video or audio speed by 0.1
-    slowify: function(mediaElementId) {
-      document.getElementById(mediaElementId).playbackRate -= 0.1;
     },
 
     // takes an array with duplicates and returns a new one with all dupes removed

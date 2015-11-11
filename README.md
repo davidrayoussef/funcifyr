@@ -5,16 +5,16 @@ funcifyr.js (pronounced Funkifier) is a functional library used for function com
 ```javascript
 funcifyr.andify() // runs 2 functions on arg, returns true if both true
 funcifyr.arrayify() // converts NodeList into an Array
-funcifyr.colorify() // returns random hex color
 funcifyr.composify() // creates new function from two functions
 funcifyr.currify() // creates copy of a function with preset first param
 funcifyr.defuncify() // turns a function into a method
 funcifyr.falsify() // creates a negate function
-funcifyr.fastify() // increases HTML5 video or audio speed
 funcifyr.fillify() // returns an array prefilled with a value
 funcifyr.flattify() // flattens multidimensional arrays
 funcifyr.fluentify() // used for method chaining
 funcifyr.funcify() // turns a method into a function
+funcifyr.getify() // plucks props from objs in array
+funcifyr.hexify() // returns random hex color
 funcifyr.lessthanify() // tests for values less than x
 funcifyr.mapify() // runs a callback on an unmappable collection
 funcifyr.morethanify() // tests for values more than x
@@ -23,7 +23,6 @@ funcifyr.pipeify() // runs a function on passed-in results of another
 funcifyr.randomify() // returns random integer 
 funcifyr.repeatify() // repeats a string a number of times
 funcifyr.schonfinkelify() // a more general-purpose currify
-funcifyr.slowify() // decreases HTML5 video or audio speed
 funcifyr.uniqify() // removes duplicates
 ```
 
@@ -74,32 +73,6 @@ iterableCollection.forEach(function(el) {
 ```
 
 
-## funcifyr.colorify()
-
-Returns a random hex color.
-```javascript
-<ul>
-  <li></li>
-  <li></li>
-  <li></li>
-</ul>
-
-var lis = funcifyr.arrayify(document.getElementsByTagName('li'));
-
-lis.map(function(li) {
-  li.style.width = '200px';
-  li.style.height = '200px';
-  li.style.background = funcifyr.colorify();
-});
-
-<ul>
-  <li style="width: 200px; height: 200px; background: #D8B0FE;"></li>
-  <li style="width: 200px; height: 200px; background: #E9D26D;"></li>
-  <li style="width: 200px; height: 200px; background: #70F5C1;"></li>
-</ul>
-```
-
-
 ## funcifyr.composify(fn1, fn2)
 
 Creates a function from two functions. 
@@ -144,7 +117,7 @@ String.prototype.reverseString = funcifyr.defuncify(reverseString);
 
 Creates a negate function that returns true if the result is false.
 
-e.g. You want to grab customers that are NOT Gold members and list them as NOT elligible.
+e.g. You want to grab customers that are NOT Gold members and list them as not elligible.
 ```javascript
 var data = [ 
   { name: 'Marty Mcfly', hasGold: true }, 
@@ -220,6 +193,73 @@ Takes a method of an object and turns it into a function. For example, shorten "
 var log = funcifyr.funcify(console, 'log');
 
 log("Wow I'm saving keystrokes."); //=> Wow I'm saving keystrokes.
+```
+
+
+## funcifyr.getify(prop)
+
+Plucks properties from data objects.
+
+e.g. You'd like to create functions to pull the names and emails from an array of objects to be passed in later...
+
+```javascript
+var data = [
+  {
+    id: 1,
+    name: 'Gina',
+    email: 'gina@gmail.com'
+  },
+  {
+    id: 2,
+    name: 'Lucy',
+    email: 'lucy@gmail.com'
+  },
+  {
+    id: 3,
+    name: 'Al',
+    email: 'al@gmail.com'
+  },
+  {
+    id: 4,
+    name: 'Tony',
+    email: 'tony@gmail.com'
+  }
+];
+
+var getNames = funcifyr.getify('name'); 
+var getEmails = funcifyr.getify('email'); 
+
+var namesFromData = getNames(data);
+var emailsFromData = getEmails(data);
+
+console.log(namesFromData); //=> ["Gina", "Lucy", "Al", "Tony"]
+console.log(emailsFromData); //=> ["gina@gmail.com", "lucy@gmail.com", "al@gmail.com", "tony@gmail.com"]
+```
+
+
+## funcifyr.hexify()
+
+Returns a random hex color.
+```javascript
+<ul>
+  <li></li>
+  <li></li>
+  <li></li>
+</ul>
+
+var lis = funcifyr.arrayify(document.getElementsByTagName('li'));
+
+lis.map(function(li) {
+  li.style.width = '200px';
+  li.style.height = '200px';
+  li.style.background = funcifyr.colorify();
+});
+
+<ul>
+  <li style="width: 200px; height: 200px; background: #D8B0FE;"></li>
+  <li style="width: 200px; height: 200px; background: #E9D26D;"></li>
+  <li style="width: 200px; height: 200px; background: #70F5C1;"></li>
+</ul>
 ```
 
 
