@@ -252,7 +252,7 @@ var lis = funcifyr.arrayify(document.getElementsByTagName('li'));
 lis.map(function(li) {
   li.style.width = '200px';
   li.style.height = '200px';
-  li.style.background = funcifyr.colorify();
+  li.style.background = funcifyr.hexify();
 });
 
 <ul>
