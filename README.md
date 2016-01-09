@@ -1,29 +1,33 @@
 # funcifyr.js 
-funcifyr.js (pronounced Funkifier) is a functional library used for function composition, creation and manipulation.
+funcifyr.js (pronounced Funkifier) is a functional library used for function composition and creation, and data manipulation.
 
 # tl;dr
 ```javascript
-funcifyr.andify() // runs 2 functions on arg, returns true if both true
-funcifyr.arrayify() // converts NodeList into an Array
-funcifyr.composify() // creates new function from two functions
-funcifyr.currify() // creates copy of a function with preset first param
-funcifyr.defuncify() // turns a function into a method
-funcifyr.falsify() // creates a negate function
-funcifyr.fillify() // returns an array prefilled with a value
-funcifyr.flattify() // flattens multidimensional arrays
-funcifyr.fluentify() // used for method chaining
-funcifyr.funcify() // turns a method into a function
-funcifyr.getify() // plucks props from objs in array
-funcifyr.hexify() // returns random hex color
-funcifyr.lessthanify() // tests for values less than x
-funcifyr.mapify() // runs a callback on an unmappable collection
-funcifyr.morethanify() // tests for values more than x
-funcifyr.orify() // runs 2 functions on arg, returns true if either true
-funcifyr.pipeify() // runs a function on passed-in results of another
-funcifyr.randomify() // returns random integer 
-funcifyr.repeatify() // repeats a string a number of times
-funcifyr.schonfinkelify() // a more general-purpose currify
-funcifyr.uniqify() // removes duplicates
+F.andify() // runs 2 functions on arg, returns true if both true
+F.arrayify() // converts NodeList into an Array
+F.composify() // creates new function from two functions
+F.currify() // creates copy of a function with preset first param
+F.defuncify() // turns a function into a method
+F.falsify() // creates a negate function
+F.fillify() // returns an array prefilled with a value
+F.flattify() // flattens multidimensional arrays
+F.fluentify() // used for method chaining
+F.funcify() // turns a method into a function
+F.getify() // plucks props from objects in array
+F.hexify() // returns random hex color
+F.lessthanify() // tests for values less than x
+F.mapify() // runs a callback on an unmappable collection
+F.morethanify() // tests for values more than x
+F.orify() // runs 2 functions on arg, returns true if either true
+F.pipeify() // runs a function on passed-in results of another
+F.randomify() // returns random integer 
+F.repeatify() // repeats a string a number of times
+F.schonfinkelify() // a more general-purpose currify
+F.styleify() // creates style objects to style HTML elements inline
+F.thenify() // creates sequence of chainable actions
+F.uniqify() // removes duplicates
+F.whenify() // runs function when result of a function predicate is true
+
 ```
 
 # Examples
@@ -393,6 +397,22 @@ todo
 ```
 
 
+## funcifyr.styleify(styleObject)
+
+Creates functions from style objects to place inline styles on DOM elements.
+```javascript
+todo
+```
+
+
+## funcifyr.thenify(value)
+
+Creates a sequence of chainable actions.
+```javascript
+todo
+```
+
+
 ## funcifyr.uniqify(arr)
 
 Takes an array which might have duplicates and returns a new array with all dupes removed.
@@ -402,4 +422,12 @@ var arrWithDupes = ['a', 1, 1, 'a', 'a', 'b', 2, 'b', 2, 2, 'b', 'c', 3, 3];
 var uniqified = funcifyr.uniqify(arrWithDupes);
 
 console.log(uniqified); //=> ["a", 1, "b", 2, "c", 3]
+```
+
+
+## funcifyr.whenify(fnPredicate, fnWhenTrue)
+
+Runs a function when the result of a predicate function returns true.
+```javascript
+todo
 ```
