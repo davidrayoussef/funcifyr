@@ -8,7 +8,7 @@
       // runs two predicate functions on an argument and returns true if both are true 
       andify: function(fn1, fn2) {
         return function andified(arg) {
-          return fn1(arg) && fn2(arg);
+          return fn1.call(this, arg) && fn2.call(this, arg);
         }
       },
 
@@ -26,10 +26,11 @@
         }
       },
 
-      // creates a copy of a function with a preset first parameter
-      currify: function(fn, a) {
-        return function currified(b) {
-          return fn.call(this, a, b);
+      // converts a function into a nested series of unary functions
+      currify: function(fn) {
+        var slice = Array.prototype.slice, args = slice.call(arguments, 1);
+        return function currified() {
+          return fn.apply(null, args.concat(slice.call(arguments)));
         }
       },
 
@@ -118,7 +119,14 @@
       // runs two predicate functions on an argument, returns true if one OR the other is true 
       orify: function(fn1, fn2) {
         return function orified(arg) {
-          return fn1(arg) || fn2(arg);
+          return fn1.call(this, arg) || fn2.call(this, arg);
+        }
+      },
+
+      // creates a copy of a function with a preset first parameter
+      partialify: function(fn, a) {
+        return function partialified(b) {
+          return fn.call(this, a, b);
         }
       },
 
@@ -139,14 +147,6 @@
         return Array.apply(null, new Array(times)).map(function() {
           return str;
         }).join('');
-      },
-
-      // a more general-purpose currify with arbitrary arity
-      schonfinkelify: function(fn) {
-        var slice = Array.prototype.slice, args = slice.call(arguments, 1);
-        return function schonfinkeliied() {
-          return fn.apply(null, args.concat(slice.call(arguments)));
-        }
       },
 
       // creates functions from style objects to place inline styles on elements

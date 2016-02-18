@@ -1,5 +1,5 @@
 # funcifyr.js 
-funcifyr.js (pronounced Funkifier) is a functional library used for function composition and creation, and data manipulation.
+funcifyr.js is a functional library used for function creation, combination, composition and decoration.
 
 # tl;dr
 ```javascript
@@ -19,10 +19,10 @@ F.lessthanify() // tests for values less than x
 F.mapify() // runs a callback on an unmappable collection
 F.morethanify() // tests for values more than x
 F.orify() // runs 2 functions on arg, returns true if either true
+F.partialify() // a more general-purpose currify
 F.pipeify() // runs a function on passed-in results of another
 F.randomify() // returns random integer 
 F.repeatify() // repeats a string a number of times
-F.schonfinkelify() // a more general-purpose currify
 F.styleify() // creates style objects to style HTML elements inline
 F.thenify() // creates sequence of chainable actions
 F.uniqify() // removes duplicates
@@ -79,7 +79,7 @@ iterableCollection.forEach(function(el) {
 
 ## funcifyr.composify(fn1, fn2)
 
-Creates a function from two functions. 
+Creates a composed function by applying one function to the output of another function.
 ```javascript
 var getFirstLastName = function(person) { return person.split(' '); };
 var reverseOrder = function(names) { return names[1] + ', ' + names[0]; };
@@ -89,20 +89,11 @@ console.log(lastNameFirst('Joe Schmoe')); //=> Schmoe, Joe
 ```
 
 
-## funcifyr.currify(fn, a)
+## funcifyr.currify(fn)
 
-Creates a copy of a function with a preset first parameter. Useful for creating functions where you know the first argument but not the rest. Technically this should be called partialify, but currify sounds better.
+Converts a function into a nested series of unary functions.
 ```javascript
-function greeter(greet, greeting) { 
-  console.log(`${greet}, ${greeting}`);
-}
-var englishGreet = funcifyr.currify(greeter, 'Hi');
-var spanishGreet = funcifyr.currify(greeter, 'Hola');
-var japaneseGreet = funcifyr.currify(greeter, 'Konnichiwa');
-
-englishGreet('how are you?'); //=> Hi, how are you?
-spanishGreet('how are you?'); //=> Hola, how are you?
-japaneseGreet('how are you?'); //=> Konnichiwa, how are you?
+todo example
 ```
 
 
@@ -297,6 +288,33 @@ console.table(targetAudience);
 ```
 
 
+## funcifyr.morethanify(x)
+
+Creates a predicate function to test for values more than x.
+
+```javascript
+var isMoreThan80 = funcifyr.morethanify(80);
+
+var list = [  
+  { name: 'Lisa the Lawyer', age: 40 },
+  { name: 'Jebediah the Grey', age: 101 },
+  { name: 'Dan the Doctor', age: 50 },
+  { name: 'Punky the Brat', age: 16 },
+  { name: 'Methusaleh the Wise', age: 900 },
+  { name: 'Sally the Secretary', age: 35 },
+  { name: 'Dennis the Menace', age: 15 }
+];
+
+var getsSeniorDiscount = list.filter(function(person) {
+  return isMoreThan80(person.age);
+}).map(function(person) {
+  return person.name;
+});
+
+console.log(getsSeniorDiscount); //=> ["Jebediah the Grey", "Methusaleh the Wise"]
+```
+
+
 ## funcifyr.orify(fn1, fn2)
 
 Runs two predicate functions on an argument and returns true if one OR the other is true.
@@ -324,30 +342,20 @@ console.table(isEligible);
 ```
 
 
-## funcifyr.morethanify(x)
+## funcifyr.partialify(fn, a)
 
-Creates a predicate function to test for values more than x.
-
+Used to partially apply a parameter to a function.
 ```javascript
-var isMoreThan80 = funcifyr.morethanify(80);
+function greeter(greet, greeting) { 
+  console.log(`${greet}, ${greeting}`);
+}
+var englishGreet = funcifyr.partialify(greeter, 'Hi');
+var spanishGreet = funcifyr.partialify(greeter, 'Hola');
+var japaneseGreet = funcifyr.partialify(greeter, 'Konnichiwa');
 
-var list = [  
-  { name: 'Lisa the Lawyer', age: 40 },
-  { name: 'Jebediah the Grey', age: 101 },
-  { name: 'Dan the Doctor', age: 50 },
-  { name: 'Punky the Brat', age: 16 },
-  { name: 'Methusaleh the Wise', age: 900 },
-  { name: 'Sally the Secretary', age: 35 },
-  { name: 'Dennis the Menace', age: 15 }
-];
-
-var getsSeniorDiscount = list.filter(function(person) {
-  return isMoreThan80(person.age);
-}).map(function(person) {
-  return person.name;
-});
-
-console.log(getsSeniorDiscount); //=> ["Jebediah the Grey", "Methusaleh the Wise"]
+englishGreet('how are you?'); //=> Hi, how are you?
+spanishGreet('how are you?'); //=> Hola, how are you?
+japaneseGreet('how are you?'); //=> Konnichiwa, how are you?
 ```
 
 
@@ -386,14 +394,6 @@ console.log(pluckInitials(data)); //=> ["SM", "AB", "MG", "HM", "BD"]
 Repeats a string a number of times.
 ```javascript
 funcifyr.repeatify('repeat', 8) //=> "repeatrepeatrepeatrepeatrepeatrepeatrepeatrepeat"
-```
-
-
-## funcifyr.schonfinkelify()
-
-A more general purpose curry with arbitrary arity.
-```javascript
-todo
 ```
 
 
