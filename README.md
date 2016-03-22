@@ -5,6 +5,7 @@ funcifyr.js is a functional library used for function creation, combination, com
 ```javascript
 F.andify() // runs 2 functions on arg, returns true if both true
 F.arrayify() // converts NodeList into an Array
+F.colorify() // returns random hex color
 F.composify() // creates new function from two functions
 F.currify() // creates copy of a function with preset first param
 F.defuncify() // turns a function into a method
@@ -14,7 +15,6 @@ F.flattify() // flattens multidimensional arrays
 F.fluentify() // used for method chaining
 F.funcify() // turns a method into a function
 F.getify() // plucks props from objects in array
-F.hexify() // returns random hex color
 F.lessthanify() // tests for values less than x
 F.mapify() // runs a callback on an unmappable collection
 F.morethanify() // tests for values more than x
@@ -74,6 +74,32 @@ iterableCollection.forEach(function(el) {
 <div class="old-class new-class"></div>
 <div class=​"old-class new-class">​</div>​
 <div class=​"old-class new-class">​</div>​
+```
+
+
+## funcifyr.colorify()
+
+Returns a random hex color.
+```javascript
+<ul>
+  <li></li>
+  <li></li>
+  <li></li>
+</ul>
+
+var lis = funcifyr.arrayify(document.getElementsByTagName('li'));
+
+lis.map(function(li) {
+  li.style.width = '200px';
+  li.style.height = '200px';
+  li.style.background = funcifyr.hexify();
+});
+
+<ul>
+  <li style="width: 200px; height: 200px; background: #D8B0FE;"></li>
+  <li style="width: 200px; height: 200px; background: #E9D26D;"></li>
+  <li style="width: 200px; height: 200px; background: #70F5C1;"></li>
+</ul>
 ```
 
 
@@ -232,32 +258,6 @@ console.log(emailsFromData); //=> ["gina@gmail.com", "lucy@gmail.com", "al@gmail
 ```
 
 
-## funcifyr.hexify()
-
-Returns a random hex color.
-```javascript
-<ul>
-  <li></li>
-  <li></li>
-  <li></li>
-</ul>
-
-var lis = funcifyr.arrayify(document.getElementsByTagName('li'));
-
-lis.map(function(li) {
-  li.style.width = '200px';
-  li.style.height = '200px';
-  li.style.background = funcifyr.hexify();
-});
-
-<ul>
-  <li style="width: 200px; height: 200px; background: #D8B0FE;"></li>
-  <li style="width: 200px; height: 200px; background: #E9D26D;"></li>
-  <li style="width: 200px; height: 200px; background: #70F5C1;"></li>
-</ul>
-```
-
-
 ## funcifyr.lessthanify(x)
 
 Creates a predicate function to test for values less than x.
@@ -329,8 +329,8 @@ var data = [
   { name: 'Agnes Agatha', monthsSubscribed: 12, hasGold: true }
 ];
 
-var isGoldMember = (member) => member.hasGold;
-var isYearSubscriber = (member) => member.monthsSubscribed === 12;
+var isGoldMember = member => member.hasGold;
+var isYearSubscriber = member => member.monthsSubscribed === 12;
 
 var isEligible = data.filter(funcifyr.orify(isGoldMember, isYearSubscriber));
 
@@ -344,7 +344,7 @@ console.table(isEligible);
 
 ## funcifyr.partialify(fn, a)
 
-Used to partially apply a parameter to a function.
+Creates a copy of a function with a preset first parameter.
 ```javascript
 function greeter(greet, greeting) { 
   console.log(`${greet}, ${greeting}`);
