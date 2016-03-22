@@ -1,23 +1,27 @@
 {
-  "name": "fnfy",
+  "name": "funcifyr",
   "version": "1.0.0",
-  "description": "Functional library for often-used helpers and methods.",
-  "main": "fnfy",
+  "description": "A functional library used for function composition and creation, and data manipulation.",
+  "main": "funcifyr.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha tests/funcifyr-test.js -w"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/davidrayoussef/funcify.git"
+    "url": "git+https://github.com/davidrayoussef/funcifyr.git"
   },
   "keywords": [
-    "funcify",
+    "funcifyr",
     "fnfy"
   ],
-  "author": "David Ra Youssef <davidragraphics@gmail.com> (http://davidra.co/)",
+  "author": "David Ra Youssef <davidradeveloper@gmail.com> (http://davidra.co/)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/davidrayoussef/funcify/issues"
   },
-  "homepage": "https://github.com/davidrayoussef/funcify#readme"
+  "homepage": "https://github.com/davidrayoussef/funcify#readme",
+  "devDependencies": {
+    "chai": "3.5.0",
+    "mocha": "2.4.5"
+  }
 }
