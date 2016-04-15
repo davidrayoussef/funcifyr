@@ -4,7 +4,7 @@
   "description": "A functional library used for function composition and creation, and data manipulation.",
   "main": "funcifyr.js",
   "scripts": {
-    "test": "mocha tests/funcifyr-test.js -w"
+    "test": "mocha tests/funcifyr-test.js"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,13 @@
   },
   "homepage": "https://github.com/davidrayoussef/funcify#readme",
   "devDependencies": {
-    "chai": "3.5.0",
-    "mocha": "2.4.5"
+    "chai": "^3.5.0",
+    "ghooks": "^1.2.1",
+    "mocha": "^2.4.5"
+  },
+  "config": {
+    "ghooks": {
+      "pre-commit": "npm run test"
+    }
   }
 }
