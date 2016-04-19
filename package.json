@@ -4,7 +4,7 @@
   "description": "A functional library used for function composition and creation, and data manipulation.",
   "main": "funcifyr.js",
   "scripts": {
-    "test": "mocha tests/funcifyr-test.js"
+    "test": "istanbul cover -x *.test.js node_modules/mocha/bin/_mocha -- -R spec tests/funcifyr.test.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "ghooks": "^1.2.1",
+    "istanbul": "^0.4.3",
     "mocha": "^2.4.5"
   },
   "config": {
