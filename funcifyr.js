@@ -1,5 +1,15 @@
-;(function ( global ) {
-'use strict';
+;(function(root, factory) {
+  if (typeof exports !== 'undefined') {
+    if (typeof module !== 'undefined' && module.exports) {
+      exports = module.exports = factory();
+    }
+    exports.funcifyr = factory();
+  }
+  else {
+    root.F = root.funcifyr = factory();
+  }
+})(this, function() {
+  'use strict';
 
   var funcifyr = (function() {
 
@@ -188,14 +198,6 @@
 
   })();
 
-  if (typeof exports !== 'undefined') {
-    if (typeof module !== 'undefined' && module.exports) {
-      exports = module.exports = funcifyr;
-    }
-    exports.funcifyr = funcifyr;
-  }
-  else {
-    global.F = global.funcifyr = funcifyr;
-  }
+  return funcifyr;
 
-})( this );
+});
