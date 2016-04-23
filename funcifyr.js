@@ -1,4 +1,4 @@
-(function ( global ) {
+;(function ( global ) {
 'use strict';
 
   var funcifyr = (function() {
@@ -188,6 +188,14 @@
 
   })();
 
-  global.F = global.funcifyr = funcifyr;
+  if (typeof exports !== 'undefined') {
+    if (typeof module !== 'undefined' && module.exports) {
+      exports = module.exports = funcifyr;
+    }
+    exports.funcifyr = funcifyr;
+  }
+  else {
+    global.F = global.funcifyr = funcifyr;
+  }
 
 })( this );
