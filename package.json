@@ -4,7 +4,7 @@
   "description": "A functional library used for function composition and creation, and data manipulation.",
   "main": "funcifyr.js",
   "scripts": {
-    "test": "mocha tests/funcifyr.test.js --compilers js:babel-register",
+    "test": "mocha tests/funcifyr.spec.js --compilers js:babel-register --reporter=nyan",
     "watch:test": "npm t -- -w",
     "cover": "nyc npm t"
   },

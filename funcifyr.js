@@ -15,7 +15,7 @@
 
     return {
 
-      // runs two predicate functions on an argument and returns true if both are true 
+      // runs two predicate functions on an argument and returns true if both are true
       andify: function(fn1, fn2) {
         return function andified(arg) {
           return fn1.call(null, arg) && fn2.call(null, arg);
@@ -45,13 +45,20 @@
 
       // converts a function into a nested series of unary functions
       currify: function(fn) {
-        var slice = Array.prototype.slice, args = slice.call(arguments, 1);
+        var slice = Array.prototype.slice;
         return function currified() {
-          return fn.apply(null, args.concat(slice.call(arguments)));
+          var outerArgs = slice.call(arguments);
+          return outerArgs.length >= fn.length ?
+            fn.apply(null, outerArgs) :
+            function(innerArg) {
+              var newArgs = [].concat(outerArgs);
+              newArgs.push(innerArg);
+              return currified.apply(null, newArgs);
+            }
         }
       },
 
-      // turns a function into a method  
+      // turns a function into a method
       defuncify: function(fn) {
         return function defuncified(a) {
           return fn(this, a);
@@ -67,14 +74,14 @@
 
       // returns an array prefilled with a value a number of times
       fillify: function(value, times) {
-        return Array.fill ? new Array(times).fill(value) : Array.apply(null, Array(+times)).map(function() { 
+        return Array.fill ? new Array(times).fill(value) : Array.apply(null, Array(+times)).map(function() {
           return value;
         });
       },
 
       // takes any number of arguments and multidimensional arrays and returns new array with results flattened
       flattify: function(){
-        return [].slice.call(arguments).reduce(function(a, b) {              
+        return [].slice.call(arguments).reduce(function(a, b) {
           return a.concat(Array.isArray(b) ? funcifyr.flattify.apply(null, b) : b);
         }, []);
       },
@@ -96,8 +103,8 @@
 
       // plucks properties from array of objects
       getify: function(prop) {
-        return function getified(arr) {
-          return arr.map(function(obj) {
+        return function getified(arrayOfObjects) {
+          return arrayOfObjects.map(function(obj) {
             return obj[prop];
           });
         };
@@ -124,7 +131,7 @@
         }
       },
 
-      // runs two predicate functions on an argument, returns true if one OR the other is true 
+      // runs two predicate functions on an argument, returns true if one OR the other is true
       orify: function(fn1, fn2) {
         return function orified(arg) {
           return fn1.call(null, arg) || fn2.call(null, arg);
@@ -145,7 +152,7 @@
         }
       },
 
-      // returns a random integer between min and max 
+      // returns a random integer between min and max
       randomify: function(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
       },

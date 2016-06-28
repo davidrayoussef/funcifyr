@@ -42,7 +42,49 @@ describe('composify', () => {
 
     let actual = typeof F.composify();
     let expected = 'function';
-    
+
     assert.equal(actual, expected);
+
+  });
+});
+
+describe('currify', () => {
+  it('should return a function', () => {
+
+    let actual = typeof F.currify();
+    let expected = 'function';
+
+    assert.equal(actual, expected);
+
+  });
+});
+
+describe('currify', () => {
+  it('should return a function that takes a function as an argument', () => {
+
+    let add = (a, b) => a + b;
+    let curredFunction = F.currify(add);
+
+    let actual = typeof curredFunction;
+    let expected = 'function';
+
+    assert.equal(actual, expected);
+
+  });
+});
+
+describe('currify', () => {
+  it('should return the result of a curried function', () => {
+
+    let add = (a, b) => a + b;
+    let curriedAdd = F.currify(add);
+    console.log(curriedAdd);
+    let add5 = curriedAdd(5);
+
+    let actual = add5(6);
+    let expected = 11;
+
+    assert.equal(actual, expected);
+
   });
 });
