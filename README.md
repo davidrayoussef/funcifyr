@@ -1,4 +1,4 @@
-# funcifyr.js 
+# funcifyr.js
 funcifyr.js is a functional library used for function creation, combination, composition and decoration.
 
 # tl;dr
@@ -7,7 +7,7 @@ F.andify() // runs 2 functions on arg, returns true if both true
 F.arrayify() // converts NodeList into an Array
 F.colorify() // returns random hex color
 F.composify() // creates new function from two functions
-F.currify() // creates copy of a function with preset first param
+F.currify() // takes a function with multiple params, returns a function with one param
 F.defuncify() // turns a function into a method
 F.falsify() // creates a negate function
 F.fillify() // returns an array prefilled with a value
@@ -19,9 +19,9 @@ F.lessthanify() // tests for values less than x
 F.mapify() // runs a callback on an unmappable collection
 F.morethanify() // tests for values more than x
 F.orify() // runs 2 functions on arg, returns true if either true
-F.partialify() // a more general-purpose currify
+F.partialify() // creates copy of a function with preset first param
 F.pipeify() // runs a function on passed-in results of another
-F.randomify() // returns random integer 
+F.randomify() // returns random integer
 F.repeatify() // repeats a string a number of times
 F.styleify() // creates style objects to style HTML elements inline
 F.thenify() // creates sequence of chainable actions
@@ -56,18 +56,18 @@ The methods querySelectorAll(), getElementsByClassName() and getElementsByTagNam
 <div class="old-class"></div>
 
 var elementCollection = document.querySelectorAll('div');
-elementCollection.forEach(function(el) { 
+elementCollection.forEach(function(el) {
   el.className += ' new-class';
 });
 //=> Uncaught TypeError: elementCollection.forEach is not a function
 ```
 
-Use arrayify to turn them into arrays that can then be iterated over with 
-.forEach, .map, .filter, etc. 
+Use arrayify to turn them into arrays that can then be iterated over with
+.forEach, .map, .filter, etc.
 ```javascript
 var elementCollection = document.querySelectorAll('div');
 var iterableCollection = funcifyr.arrayify(elementCollection);
-iterableCollection.forEach(function(el) { 
+iterableCollection.forEach(function(el) {
   el.className += ' new-class';
 });
 
@@ -117,7 +117,7 @@ console.log(lastNameFirst('Joe Schmoe')); //=> Schmoe, Joe
 
 ## funcifyr.currify(fn)
 
-Converts a function into a nested series of unary functions.
+Takes a function with multiple parameters as input and returns a function with exactly one parameter
 ```javascript
 todo example
 ```
@@ -140,8 +140,8 @@ Creates a negate function that returns true if the result is false.
 
 e.g. You want to grab customers that are NOT Gold members and list them as not elligible.
 ```javascript
-var data = [ 
-  { name: 'Marty Mcfly', hasGold: true }, 
+var data = [
+  { name: 'Marty Mcfly', hasGold: true },
   { name: 'Jake Jumanji', hasGold: false },  
   { name: 'Frederick Finkelstein', hasGold: false },  
   { name: 'Gertrude Gretel', hasGold: false },  
@@ -191,7 +191,7 @@ Customer.prototype.setName = funcifyr.fluentify(function(name) { this.name = nam
 
 Customer.prototype.setAge = funcifyr.fluentify(function(age) { this.age = age; });
 
-Customer.prototype.setLocation = funcifyr.fluentify(function(city, state) { 
+Customer.prototype.setLocation = funcifyr.fluentify(function(city, state) {
   this.city = city;
   this.state = state;
 });
@@ -247,8 +247,8 @@ var data = [
   }
 ];
 
-var getNames = funcifyr.getify('name'); 
-var getEmails = funcifyr.getify('email'); 
+var getNames = funcifyr.getify('name');
+var getEmails = funcifyr.getify('email');
 
 var namesFromData = getNames(data);
 var emailsFromData = getEmails(data);
@@ -321,8 +321,8 @@ Runs two predicate functions on an argument and returns true if one OR the other
 
 e.g. You want to grab customers that either have a gold membership, OR a 12-month subscription.
 ```javascript
-var data = [ 
-  { name: 'Marty Mcfly', monthsSubscribed: 1, hasGold: true }, 
+var data = [
+  { name: 'Marty Mcfly', monthsSubscribed: 1, hasGold: true },
   { name: 'Jake Jumanji', monthsSubscribed: 12, hasGold: false },  
   { name: 'Frederick Finkelstein', monthsSubscribed: 6, hasGold: false },  
   { name: 'Gertrude Gretel', monthsSubscribed: 1, hasGold: false },  
@@ -346,7 +346,7 @@ console.table(isEligible);
 
 Creates a copy of a function with a preset first parameter.
 ```javascript
-function greeter(greet, greeting) { 
+function greeter(greet, greeting) {
   console.log(`${greet}, ${greeting}`);
 }
 var englishGreet = funcifyr.partialify(greeter, 'Hi');
@@ -363,15 +363,15 @@ japaneseGreet('how are you?'); //=> Konnichiwa, how are you?
 
 Runs a function on the passed-in results of another function. Same as compose but function order is reversed.
 ```javascript
-var data = [ 
-  { id: 1, name: 'Starvin Marvin', age: 39 }, 
+var data = [
+  { id: 1, name: 'Starvin Marvin', age: 39 },
   { id: 2, name: 'Anna Banana', age: 25 },  
   { id: 3, name: 'Mean Gene', age: 33 },  
   { id: 4, name: 'Hairy Mary', age: 21 },  
   { id: 5, name: 'Brave Dave', age: 40 }
 ];
 
-var getNames = function(data) { 
+var getNames = function(data) {
   return data.map(function(v) {
     return v.name;
   });

@@ -43,7 +43,7 @@
         }
       },
 
-      // converts a function into a nested series of unary functions
+      // takes a variadic function and returns a unary function
       currify: function(fn) {
         var slice = Array.prototype.slice;
         return function currified() {
