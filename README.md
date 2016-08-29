@@ -15,6 +15,7 @@ F.flattify() // flattens multidimensional arrays
 F.fluentify() // used for method chaining
 F.funcify() // turns a method into a function
 F.getify() // plucks props from objects in array
+F.isify() // creates a type checker
 F.lessthanify() // tests for values less than x
 F.mapify() // runs a callback on an unmappable collection
 F.morethanify() // tests for values more than x
@@ -37,8 +38,8 @@ Runs two predicate functions on an argument and returns true if both are true.
 
 e.g. You want to check if something is a string AND has more than 6 characters...
 ```javascript
-var isString = function(a) { return typeof a === 'string'; };
-var isLongerThanSix = function(b) { return b.length > 6; };
+var isString = str => typeof str === 'string';
+var isLongerThanSix = str => str.length > 6;
 var isValid = funcifyr.andify(isString, isLongerThanSix);
 
 isValid(55); //=> false
@@ -56,9 +57,7 @@ The methods querySelectorAll(), getElementsByClassName() and getElementsByTagNam
 <div class="old-class"></div>
 
 var elementCollection = document.querySelectorAll('div');
-elementCollection.forEach(function(el) {
-  el.className += ' new-class';
-});
+elementCollection.map(el => el.className += ' new-class');
 //=> Uncaught TypeError: elementCollection.forEach is not a function
 ```
 
@@ -67,9 +66,7 @@ Use arrayify to turn them into arrays that can then be iterated over with
 ```javascript
 var elementCollection = document.querySelectorAll('div');
 var iterableCollection = funcifyr.arrayify(elementCollection);
-iterableCollection.forEach(function(el) {
-  el.className += ' new-class';
-});
+iterableCollection.map(el => el.className += ' new-class');
 
 <div class="old-class new-class"></div>
 <div class=​"old-class new-class">​</div>​
@@ -89,10 +86,10 @@ Returns a random hex color.
 
 var lis = funcifyr.arrayify(document.getElementsByTagName('li'));
 
-lis.map(function(li) {
+lis.map(li => {
   li.style.width = '200px';
   li.style.height = '200px';
-  li.style.background = funcifyr.hexify();
+  li.style.background = funcifyr.colorify();
 });
 
 <ul>
@@ -107,8 +104,8 @@ lis.map(function(li) {
 
 Creates a composed function by applying one function to the output of another function.
 ```javascript
-var getFirstLastName = function(person) { return person.split(' '); };
-var reverseOrder = function(names) { return names[1] + ', ' + names[0]; };
+var getFirstLastName = person => person.split(' ');
+var reverseOrder = names => `${names[1]}, ${names[0]}`;
 var lastNameFirst = funcifyr.composify(reverseOrder, getFirstLastName);
 
 console.log(lastNameFirst('Joe Schmoe')); //=> Schmoe, Joe
@@ -117,7 +114,7 @@ console.log(lastNameFirst('Joe Schmoe')); //=> Schmoe, Joe
 
 ## funcifyr.currify(fn)
 
-Takes a function with multiple parameters as input and returns a function with exactly one parameter
+Translates a function that takes multiple arguments into a series of functions that each take one argument, and continues until it receives all its arguments.
 ```javascript
 todo example
 ```
@@ -127,7 +124,7 @@ todo example
 
 Takes a function and turns it into a method.
 ```javascript
-var reverseString = function(str) { return str.split('').reverse().join(''); };
+var reverseString = str => str.split('').reverse().join('');
 String.prototype.reverseString = funcifyr.defuncify(reverseString);
 
 'funcifyr'.reverseString(); //=> ryficnuf
@@ -138,17 +135,17 @@ String.prototype.reverseString = funcifyr.defuncify(reverseString);
 
 Creates a negate function that returns true if the result is false.
 
-e.g. You want to grab customers that are NOT Gold members and list them as not elligible.
+e.g. You want to grab customers that are NOT Gold members and list them as not eligible.
 ```javascript
 var data = [
   { name: 'Marty Mcfly', hasGold: true },
   { name: 'Jake Jumanji', hasGold: false },  
   { name: 'Frederick Finkelstein', hasGold: false },  
-  { name: 'Gertrude Gretel', hasGold: false },  
+  { name: 'Gertrude Gretchen', hasGold: false },  
   { name: 'Agnes Agatha', hasGold: true }
 ];
 
-var isGoldMember = (member) => member.hasGold;
+var isGoldMember = member => member.hasGold;
 var isNotGoldMember = funcifyr.falsify(isGoldMember);
 
 var isNotEligible = data.filter(isNotGoldMember);
@@ -200,9 +197,9 @@ Customer.prototype.save = function() {
   console.log(`Saving new account for ${this.age} year old ${this.name} from ${this.city}, ${this.state}...`);
 };
 
-var newCust = new Customer();
+var newCustomer = new Customer();
 
-newCust.setName('Alice').setLocation('Wonderland', 'NY').setAge(25).save();
+newCustomer.setName('Alice').setLocation('Wonderland', 'NY').setAge(25).save();
 //=> Saving new account for 25 year old Alice from Wonderland, NY...
 ```
 
@@ -258,15 +255,33 @@ console.log(emailsFromData); //=> ["gina@gmail.com", "lucy@gmail.com", "al@gmail
 ```
 
 
+## funcifyr.isify(type)
+
+Creates a function that checks whether a value is a certain type.
+
+```javascript
+var isBoolean = funcifyr.isify('boolean');
+var isNumber = funcifyr.isify('number');
+var isString = funcifyr.isify('string');
+
+isBoolean(0); //=> false
+isBoolean(false); //=> true
+isNumber('text'); //=> false
+isNumber(7); //=> true
+isString(null); //=> false
+isString('str'); //=> true
+```
+
+
 ## funcifyr.lessthanify(x)
 
-Creates a predicate function to test for values less than x.
+Creates a predicate function to test for values LESS than x.
 
 ```javascript
 var isLessThan65 = funcifyr.lessthanify(65);
 var isMoreThan21 = funcifyr.morethanify(21);
 
-var list = [  
+var data = [  
   { name: 'Lisa the Lawyer', age: 40 },
   { name: 'Jebediah the Grey', age: 101 },
   { name: 'Dan the Doctor', age: 50 },
@@ -276,11 +291,11 @@ var list = [
   { name: 'Dennis the Menace', age: 15 }
 ];
 
-var targetAudience = list.filter(function(person) {
-  return isLessThan65(person.age) && isMoreThan21(person.age);
+var targetClients = data.filter(person => {
+  return isMoreThan21(person.age) && isLessThan65(person.age);
 });
 
-console.table(targetAudience);
+console.table(targetClients);
 // (index)   name                   age
 // 0         "Lisa the Lawyer"      40
 // 1         "Dan the Doctor"       50
@@ -290,12 +305,12 @@ console.table(targetAudience);
 
 ## funcifyr.morethanify(x)
 
-Creates a predicate function to test for values more than x.
+Creates a predicate function to test for values MORE than x.
 
 ```javascript
 var isMoreThan80 = funcifyr.morethanify(80);
 
-var list = [  
+var data = [  
   { name: 'Lisa the Lawyer', age: 40 },
   { name: 'Jebediah the Grey', age: 101 },
   { name: 'Dan the Doctor', age: 50 },
@@ -305,11 +320,9 @@ var list = [
   { name: 'Dennis the Menace', age: 15 }
 ];
 
-var getsSeniorDiscount = list.filter(function(person) {
-  return isMoreThan80(person.age);
-}).map(function(person) {
-  return person.name;
-});
+var getsSeniorDiscount = data
+  .filter(person => isMoreThan80(person.age))
+  .map(person => person.name);
 
 console.log(getsSeniorDiscount); //=> ["Jebediah the Grey", "Methusaleh the Wise"]
 ```
@@ -325,7 +338,7 @@ var data = [
   { name: 'Marty Mcfly', monthsSubscribed: 1, hasGold: true },
   { name: 'Jake Jumanji', monthsSubscribed: 12, hasGold: false },  
   { name: 'Frederick Finkelstein', monthsSubscribed: 6, hasGold: false },  
-  { name: 'Gertrude Gretel', monthsSubscribed: 1, hasGold: false },  
+  { name: 'Gertrude Gretchen', monthsSubscribed: 1, hasGold: false },  
   { name: 'Agnes Agatha', monthsSubscribed: 12, hasGold: true }
 ];
 
@@ -359,7 +372,7 @@ japaneseGreet('how are you?'); //=> Konnichiwa, how are you?
 ```
 
 
-## funcifyr.pipeify(fn1, fn2)
+## funcifyr.pipeify(fns)
 
 Runs a function on the passed-in results of another function. Same as compose but function order is reversed.
 ```javascript
@@ -371,14 +384,14 @@ var data = [
   { id: 5, name: 'Brave Dave', age: 40 }
 ];
 
-var getNames = function(data) {
-  return data.map(function(v) {
+var getNames = data => {
+  return data.map(v => {
     return v.name;
   });
 };
 
-var getInitials = function(names) {
-  return names.map(function(name) {
+var getInitials = names => {
+  return names.map(name => {
     return name.split(' ')[0][0] + name.split(' ')[1][0];
   });
 }

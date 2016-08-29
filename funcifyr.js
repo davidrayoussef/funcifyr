@@ -110,6 +110,13 @@
         };
       },
 
+      // creates a type checker
+      isify: function(type) {
+        return function isified(value) {
+          return typeof value === type;
+        }
+      },
+
       // creates predicate function to test for numbers less than x
       lessthanify: function(x) {
         return function lessthanified(y) {
@@ -146,10 +153,15 @@
       },
 
       // runs a function on the passed in results of another function
-      pipeify: function(fn1, fn2) {
-        return function pipeified() {
-          return fn2.call(null, fn1.apply(null, arguments));
-        }
+      pipeify: function(/*fns*/) {
+        var fns = [].slice.call(arguments);
+        return function pipeified(/*args*/) {
+          var args = [].slice.call(arguments);
+          fns.forEach(function(fn) {
+            args = [fn.apply(null, args)];
+          });
+          return args[0];
+        };
       },
 
       // returns a random integer between min and max
