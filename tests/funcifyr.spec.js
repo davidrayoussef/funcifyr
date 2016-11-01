@@ -116,3 +116,29 @@ describe('falsify', () => {
 
   });
 });
+
+// todo: fillify
+
+describe('flattify', () => {
+  it('Should return an array', () => {
+
+    let arr = [1, 2, ['3'], true, [[false, 'a'], 'b'], 'c'];
+    let flattenedArray = F.flattify(arr);
+
+    expect(Array.isArray(flattenedArray)).to.be.true;
+
+  });
+});
+
+describe('flattify', () => {
+  it('Should return a flattened array that contains no nested arrays', () => {
+
+    let arr = [1, 2, ['3'], true, [[false, 'a'], 'b'], 'c'];
+    let flattenedArray = F.flattify(arr);
+
+    let containsNoNestedArrays = flattenedArray.every(v => !Array.isArray(v));
+
+    expect(containsNoNestedArrays).to.be.true;
+
+  });
+});
