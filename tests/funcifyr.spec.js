@@ -80,16 +80,12 @@ describe('currify', () => {
 describe('defuncify', () => {
   it('should create a method property from a regular function...', () => {
 
-    class Person {
-      constructor(name) {
-        this.name = name;
-      }
-    }
+    class Person {}
 
-    let reverseName = name => name.split('').reverse().join('');
-    Person.prototype.reverseName = F.defuncify(reverseName);
+    let reverseString = str => str.split('').reverse().join('');
+    Person.prototype.reverseString = F.defuncify(reverseString);
 
-    expect('reverseName' in Person.prototype).to.be.true;
+    expect('reverseString' in Person.prototype).to.be.true;
 
   });
 });
@@ -97,19 +93,26 @@ describe('defuncify', () => {
 describe('defuncify', () => {
   it('...and property should be a function', () => {
 
-    class Person {
-      constructor(name) {
-        this.name = name;
-      }
-    }
+    class Person {}
 
-    let reverseName = name => name.split('').reverse().join('');
-    Person.prototype.reverseName = F.defuncify(reverseName);
+    let reverseString = str => str.split('').reverse().join('');
+    Person.prototype.reverseString = F.defuncify(reverseString);
 
-    let actual = typeof Person.prototype.reverseName;
+    let actual = typeof Person.prototype.reverseString;
     let expected = 'function';
 
     assert.equal(actual, expected);
-    
+
+  });
+});
+
+describe('falsify', () => {
+  it('Should return a predicate function that is the opposite of original function', () => {
+
+    let isTrue = () => true;
+    let isFalse = F.falsify(isTrue);
+
+    expect(isFalse() === !isTrue()).to.be.true;
+
   });
 });
