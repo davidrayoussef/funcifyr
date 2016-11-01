@@ -5,7 +5,6 @@ funcifyr.js is a functional library used for function creation, combination, com
 ```javascript
 F.andify() // runs 2 functions on arg, returns true if both true
 F.arrayify() // converts NodeList into an Array
-F.colorify() // returns random hex color
 F.composify() // creates new function from two functions
 F.currify() // takes a function with multiple params, returns a function with one param
 F.defuncify() // turns a function into a method
@@ -71,32 +70,6 @@ iterableCollection.map(el => el.className += ' new-class');
 <div class="old-class new-class"></div>
 <div class=​"old-class new-class">​</div>​
 <div class=​"old-class new-class">​</div>​
-```
-
-
-## funcifyr.colorify()
-
-Returns a random hex color.
-```javascript
-<ul>
-  <li></li>
-  <li></li>
-  <li></li>
-</ul>
-
-var lis = funcifyr.arrayify(document.getElementsByTagName('li'));
-
-lis.map(li => {
-  li.style.width = '200px';
-  li.style.height = '200px';
-  li.style.background = funcifyr.colorify();
-});
-
-<ul>
-  <li style="width: 200px; height: 200px; background: #D8B0FE;"></li>
-  <li style="width: 200px; height: 200px; background: #E9D26D;"></li>
-  <li style="width: 200px; height: 200px; background: #70F5C1;"></li>
-</ul>
 ```
 
 
@@ -171,9 +144,9 @@ todo example
 
 Takes any number of arguments and multidimensional arrays and returns a new array with the results flattened.
 ```javascript
-var flattified = funcifyr.flattify('z', [[['y', 4], 3], true], [[2], [[[[[1]]]]], ['x']]);
+var flattened = funcifyr.flattify('z', [[['y', 4], 3], true], [[2], [[[[[1]]]]], ['x']]);
 
-console.log(flattified); //=> ["z", "y", 4, 3, true, 2, 1, "x"]
+console.log(flattened); //=> ["z", "y", 4, 3, true, 2, 1, "x"]
 ```
 
 

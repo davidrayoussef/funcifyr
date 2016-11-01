@@ -26,17 +26,6 @@ describe('arrayify', () => {
   });
 });
 
-describe('colorify', () => {
-  it('should return a random 6 character hex color', () => {
-
-    let isHexColor = /^#([A-Fa-f0-9]{6})$/;
-    let testIfHexColor = isHexColor.test(F.colorify());
-
-    expect(testIfHexColor).to.be.true;
-
-  });
-});
-
 describe('composify', () => {
   it('should return a function', () => {
 

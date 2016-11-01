@@ -27,15 +27,6 @@
         return Array.from ? Array.from(collection) : Array.apply(null, collection);
       },
 
-      // returns a random hex color
-      colorify: function() {
-        return '#' + (
-          '0123456789ABCDEF'.split('').map(function(v,i,a) {
-            return a[Math.floor(Math.random() * 16)];
-          }).join('').slice(0,6)
-        );
-      },
-
       // creates a function from two functions
       composify: function(fn1, fn2) {
         return function composified() {
