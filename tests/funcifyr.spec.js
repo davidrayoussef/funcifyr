@@ -67,7 +67,6 @@ describe('currify', () => {
 
     let add = (a, b) => a + b;
     let curriedAdd = F.currify(add);
-    console.log(curriedAdd);
     let add5 = curriedAdd(5);
 
     let actual = add5(6);
@@ -75,5 +74,42 @@ describe('currify', () => {
 
     assert.equal(actual, expected);
 
+  });
+});
+
+describe('defuncify', () => {
+  it('should create a method property from a regular function...', () => {
+
+    class Person {
+      constructor(name) {
+        this.name = name;
+      }
+    }
+
+    let reverseName = name => name.split('').reverse().join('');
+    Person.prototype.reverseName = F.defuncify(reverseName);
+
+    expect('reverseName' in Person.prototype).to.be.true;
+
+  });
+});
+
+describe('defuncify', () => {
+  it('...and property should be a function', () => {
+
+    class Person {
+      constructor(name) {
+        this.name = name;
+      }
+    }
+
+    let reverseName = name => name.split('').reverse().join('');
+    Person.prototype.reverseName = F.defuncify(reverseName);
+
+    let actual = typeof Person.prototype.reverseName;
+    let expected = 'function';
+
+    assert.equal(actual, expected);
+    
   });
 });
