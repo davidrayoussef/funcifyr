@@ -12,7 +12,6 @@ F.fillify() // returns an array prefilled with a value
 F.flattify() // flattens multidimensional arrays
 F.fluentify() // used for method chaining
 F.funcify() // turns a method into a function
-F.get() // plucks props from objects in array
 F.isify() // creates a type checker
 F.lessthanify() // tests for values less than x
 F.map() // runs a callback on an unmappable collection
@@ -21,9 +20,10 @@ F.negate() // creates a function that returns the opposite of a predicate
 F.orify() // runs 2 functions on arg, returns true if either true
 F.partialify() // creates copy of a function with preset first param
 F.pipe() // runs a function on passed-in results of another
+F.pluck() // plucks props from objects in array
 F.randomify() // returns random integer
 F.repeat() // repeats a string a number of times
-F.style() // creates style objects to style HTML elements inline
+F.styleify() // creates style objects to style HTML elements inline
 F.thenify() // creates sequence of chainable actions
 F.uniqify() // removes duplicates
 F.whenify() // runs function when result of a function predicate is true
@@ -159,9 +159,9 @@ log("Wow I'm saving keystrokes."); //=> Wow I'm saving keystrokes.
 ```
 
 
-## funcifyr.get(prop)
+## funcifyr.pluck(prop)
 
-Plucks properties from data objects.
+Plucks property values from data objects.
 
 e.g. You'd like to create functions to pull the names and emails from an array of objects to be passed in later...
 
@@ -189,8 +189,8 @@ var data = [
   }
 ];
 
-var getNames = funcifyr.get('name');
-var getEmails = funcifyr.get('email');
+var getNames = funcifyr.pluck('name');
+var getEmails = funcifyr.pluck('email');
 
 var namesFromData = getNames(data);
 var emailsFromData = getEmails(data);
@@ -383,7 +383,7 @@ funcifyr.repeat('repeat', 8) //=> "repeatrepeatrepeatrepeatrepeatrepeatrepeatrep
 ```
 
 
-## funcifyr.style(styleObject)
+## funcifyr.styleify(styleObject)
 
 Creates functions from style objects to place inline styles on DOM elements.
 ```javascript

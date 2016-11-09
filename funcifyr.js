@@ -85,15 +85,6 @@
         }
       },
 
-      // plucks properties from array of objects
-      get: function(prop) {
-        return function got(arrayOfObjects) {
-          return arrayOfObjects.map(function(obj) {
-            return obj[prop];
-          });
-        };
-      },
-
       // creates a type checker
       isify: function(type) {
         return function isified(value) {
@@ -155,6 +146,15 @@
         };
       },
 
+      // plucks property values from objects in array
+      pluck: function(prop) {
+        return function plucked(arrayOfObjects) {
+          return arrayOfObjects.map(function(obj) {
+            return obj[prop];
+          });
+        };
+      },
+
       // returns a random integer between min and max
       randomify: function(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
@@ -168,8 +168,8 @@
       },
 
       // creates functions from style objects to place inline styles on elements
-      style: function(styleObject) {
-        return function styled(element) {
+      styleify: function(styleObject) {
+        return function styleified(element) {
           return Object.keys(styleObject).map(function(property) {
             element.style[property] = property;
           });
