@@ -159,47 +159,6 @@ log("Wow I'm saving keystrokes."); //=> Wow I'm saving keystrokes.
 ```
 
 
-## funcifyr.pluck(prop)
-
-Plucks property values from data objects.
-
-e.g. You'd like to create functions to pull the names and emails from an array of objects to be passed in later...
-
-```javascript
-var data = [
-  {
-    id: 1,
-    name: 'Gina',
-    email: 'gina@gmail.com'
-  },
-  {
-    id: 2,
-    name: 'Lucy',
-    email: 'lucy@gmail.com'
-  },
-  {
-    id: 3,
-    name: 'Al',
-    email: 'al@gmail.com'
-  },
-  {
-    id: 4,
-    name: 'Tony',
-    email: 'tony@gmail.com'
-  }
-];
-
-var getNames = funcifyr.pluck('name');
-var getEmails = funcifyr.pluck('email');
-
-var namesFromData = getNames(data);
-var emailsFromData = getEmails(data);
-
-console.log(namesFromData); //=> ["Gina", "Lucy", "Al", "Tony"]
-console.log(emailsFromData); //=> ["gina@gmail.com", "lucy@gmail.com", "al@gmail.com", "tony@gmail.com"]
-```
-
-
 ## funcifyr.isify(type)
 
 Creates a function that checks whether a value is a certain type.
@@ -372,6 +331,47 @@ var getInitials = names => {
 var pluckInitials = funcifyr.pipe(getNames, getInitials);
 
 console.log(pluckInitials(data)); //=> ["SM", "AB", "MG", "HM", "BD"]
+```
+
+
+## funcifyr.pluck(prop)
+
+Plucks property values from data objects.
+
+e.g. You'd like to create functions to pull the names and emails from an array of objects to be passed in later...
+
+```javascript
+var data = [
+  {
+    id: 1,
+    name: 'Gina',
+    email: 'gina@gmail.com'
+  },
+  {
+    id: 2,
+    name: 'Lucy',
+    email: 'lucy@gmail.com'
+  },
+  {
+    id: 3,
+    name: 'Al',
+    email: 'al@gmail.com'
+  },
+  {
+    id: 4,
+    name: 'Tony',
+    email: 'tony@gmail.com'
+  }
+];
+
+var getNames = funcifyr.pluck('name');
+var getEmails = funcifyr.pluck('email');
+
+var namesFromData = getNames(data);
+var emailsFromData = getEmails(data);
+
+console.log(namesFromData); //=> ["Gina", "Lucy", "Al", "Tony"]
+console.log(emailsFromData); //=> ["gina@gmail.com", "lucy@gmail.com", "al@gmail.com", "tony@gmail.com"]
 ```
 
 
