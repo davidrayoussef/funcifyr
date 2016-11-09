@@ -28,23 +28,23 @@
       },
 
       // creates a function from two functions
-      composify: function(fn1, fn2) {
-        return function composified() {
+      compose: function(fn1, fn2) {
+        return function composed() {
           return fn1.call(null, fn2.apply(null, arguments));
         }
       },
 
       // takes a variadic function and returns a unary function
-      currify: function(fn) {
+      curry: function(fn) {
         var slice = Array.prototype.slice;
-        return function currified() {
+        return function curried() {
           var outerArgs = slice.call(arguments);
           return outerArgs.length >= fn.length ?
             fn.apply(null, outerArgs) :
             function(innerArg) {
               var newArgs = [].concat(outerArgs);
               newArgs.push(innerArg);
-              return currified.apply(null, newArgs);
+              return curried.apply(null, newArgs);
             }
         }
       },
@@ -56,24 +56,17 @@
         }
       },
 
-      // creates a negate function that returns true if result is false
-      falsify: function(fn) {
-        return function falsified() {
-          return !fn.apply(null, arguments);
-        }
-      },
-
       // returns an array prefilled with a value a number of times
-      fillify: function(value, times) {
+      fill: function(value, times) {
         return Array.fill ? new Array(times).fill(value) : Array.apply(null, Array(+times)).map(function() {
           return value;
         });
       },
 
       // takes any number of arguments and multidimensional arrays and returns new array with results flattened
-      flattify: function(){
+      flatten: function(){
         return [].slice.call(arguments).reduce(function(a, b) {
-          return a.concat(Array.isArray(b) ? funcifyr.flattify.apply(null, b) : b);
+          return a.concat(Array.isArray(b) ? funcifyr.flatten.apply(null, b) : b);
         }, []);
       },
 
@@ -93,8 +86,8 @@
       },
 
       // plucks properties from array of objects
-      getify: function(prop) {
-        return function getified(arrayOfObjects) {
+      get: function(prop) {
+        return function got(arrayOfObjects) {
           return arrayOfObjects.map(function(obj) {
             return obj[prop];
           });
@@ -116,7 +109,7 @@
       },
 
       // maps over an unmappable Array-like collection and runs a callback
-      mapify: function(collection, callback) {
+      map: function(collection, callback) {
         return Array.apply(null, collection).map(function(v) {
           return callback ? callback(v) : v;
         });
@@ -126,6 +119,13 @@
       morethanify: function(x) {
         return function morethanified(y) {
           return y > x;
+        }
+      },
+
+      // takes a predicate function and returns function that's the "opposite" of predicate
+      negate: function(fnPredicate) {
+        return function negated() {
+          return !fnPredicate.apply(null, arguments);
         }
       },
 
@@ -144,9 +144,9 @@
       },
 
       // runs a function on the passed in results of another function
-      pipeify: function(/*fns*/) {
+      pipe: function(/*fns*/) {
         var fns = [].slice.call(arguments);
-        return function pipeified(/*args*/) {
+        return function piped(/*args*/) {
           var args = [].slice.call(arguments);
           fns.forEach(function(fn) {
             args = [fn.apply(null, args)];
@@ -161,15 +161,15 @@
       },
 
       // repeats a string a number of times
-      repeatify: function(str, times) {
+      repeat: function(str, times) {
         return Array.apply(null, new Array(times)).map(function() {
           return str;
         }).join('');
       },
 
       // creates functions from style objects to place inline styles on elements
-      styleify: function(styleObject) {
-        return function styleified(element) {
+      style: function(styleObject) {
+        return function styled(element) {
           return Object.keys(styleObject).map(function(property) {
             element.style[property] = property;
           });

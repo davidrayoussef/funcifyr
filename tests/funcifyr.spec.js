@@ -26,10 +26,10 @@ describe('arrayify', () => {
   });
 });
 
-describe('composify', () => {
+describe('compose', () => {
   it('should return a function', () => {
 
-    let actual = typeof F.composify();
+    let actual = typeof F.compose();
     let expected = 'function';
 
     assert.equal(actual, expected);
@@ -37,10 +37,10 @@ describe('composify', () => {
   });
 });
 
-describe('currify', () => {
+describe('curry', () => {
   it('should return a function', () => {
 
-    let actual = typeof F.currify();
+    let actual = typeof F.curry();
     let expected = 'function';
 
     assert.equal(actual, expected);
@@ -48,11 +48,11 @@ describe('currify', () => {
   });
 });
 
-describe('currify', () => {
+describe('curry', () => {
   it('should return a function that takes a function as an argument', () => {
 
     let add = (a, b) => a + b;
-    let curredFunction = F.currify(add);
+    let curredFunction = F.curry(add);
 
     let actual = typeof curredFunction;
     let expected = 'function';
@@ -62,11 +62,11 @@ describe('currify', () => {
   });
 });
 
-describe('currify', () => {
+describe('curry', () => {
   it('should return the result of a curried function', () => {
 
     let add = (a, b) => a + b;
-    let curriedAdd = F.currify(add);
+    let curriedAdd = F.curry(add);
     let add5 = curriedAdd(5);
 
     let actual = add5(6);
@@ -106,39 +106,39 @@ describe('defuncify', () => {
   });
 });
 
-describe('falsify', () => {
-  it('Should return a predicate function that is the opposite of original function', () => {
+// todo: fill
 
-    let isTrue = () => true;
-    let isFalse = F.falsify(isTrue);
-
-    expect(isFalse() === !isTrue()).to.be.true;
-
-  });
-});
-
-// todo: fillify
-
-describe('flattify', () => {
+describe('flatten', () => {
   it('Should return an array', () => {
 
     let arr = [1, 2, ['3'], true, [[false, 'a'], 'b'], 'c'];
-    let flattenedArray = F.flattify(arr);
+    let flattenedArray = F.flatten(arr);
 
     expect(Array.isArray(flattenedArray)).to.be.true;
 
   });
 });
 
-describe('flattify', () => {
+describe('flatten', () => {
   it('Should return a flattened array that contains no nested arrays', () => {
 
     let arr = [1, 2, ['3'], true, [[false, 'a'], 'b'], 'c'];
-    let flattenedArray = F.flattify(arr);
+    let flattenedArray = F.flatten(arr);
 
     let containsNoNestedArrays = flattenedArray.every(v => !Array.isArray(v));
 
     expect(containsNoNestedArrays).to.be.true;
+
+  });
+});
+
+describe('negate', () => {
+  it('Should return a predicate function that is the opposite of original function', () => {
+
+    let isTrue = () => true;
+    let isFalse = F.negate(isTrue);
+
+    expect(isFalse() === !isTrue()).to.be.true;
 
   });
 });

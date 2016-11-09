@@ -5,25 +5,25 @@ funcifyr.js is a functional library used for function creation, combination, com
 ```javascript
 F.andify() // runs 2 functions on arg, returns true if both true
 F.arrayify() // converts NodeList into an Array
-F.composify() // creates new function from two functions
-F.currify() // takes a function with multiple params, returns a function with one param
+F.compose() // creates new function from two functions
+F.curry() // takes a function with multiple params, returns a function with one param
 F.defuncify() // turns a function into a method
-F.falsify() // creates a negate function
 F.fillify() // returns an array prefilled with a value
 F.flattify() // flattens multidimensional arrays
 F.fluentify() // used for method chaining
 F.funcify() // turns a method into a function
-F.getify() // plucks props from objects in array
+F.get() // plucks props from objects in array
 F.isify() // creates a type checker
 F.lessthanify() // tests for values less than x
-F.mapify() // runs a callback on an unmappable collection
+F.map() // runs a callback on an unmappable collection
 F.morethanify() // tests for values more than x
+F.negate() // creates a function that returns the opposite of a predicate
 F.orify() // runs 2 functions on arg, returns true if either true
 F.partialify() // creates copy of a function with preset first param
-F.pipeify() // runs a function on passed-in results of another
+F.pipe() // runs a function on passed-in results of another
 F.randomify() // returns random integer
-F.repeatify() // repeats a string a number of times
-F.styleify() // creates style objects to style HTML elements inline
+F.repeat() // repeats a string a number of times
+F.style() // creates style objects to style HTML elements inline
 F.thenify() // creates sequence of chainable actions
 F.uniqify() // removes duplicates
 F.whenify() // runs function when result of a function predicate is true
@@ -73,19 +73,19 @@ iterableCollection.map(el => el.className += ' new-class');
 ```
 
 
-## funcifyr.composify(fn1, fn2)
+## funcifyr.compose(fn1, fn2)
 
 Creates a composed function by applying one function to the output of another function.
 ```javascript
 var getFirstLastName = person => person.split(' ');
 var reverseOrder = names => `${names[1]}, ${names[0]}`;
-var lastNameFirst = funcifyr.composify(reverseOrder, getFirstLastName);
+var lastNameFirst = funcifyr.compose(reverseOrder, getFirstLastName);
 
 console.log(lastNameFirst('Joe Schmoe')); //=> Schmoe, Joe
 ```
 
 
-## funcifyr.currify(fn)
+## funcifyr.curry(fn)
 
 Translates a function that takes multiple arguments into a series of functions that each take one argument, and continues until it receives all its arguments.
 ```javascript
@@ -104,35 +104,7 @@ String.prototype.reverseString = funcifyr.defuncify(reverseString);
 ```
 
 
-## funcifyr.falsify(fn)
-
-Creates a negate function that returns true if the result is false.
-
-e.g. You want to grab customers that are NOT Gold members and list them as not eligible.
-```javascript
-var data = [
-  { name: 'Marty Mcfly', hasGold: true },
-  { name: 'Jake Jumanji', hasGold: false },  
-  { name: 'Frederick Finkelstein', hasGold: false },  
-  { name: 'Gertrude Gretchen', hasGold: false },  
-  { name: 'Agnes Agatha', hasGold: true }
-];
-
-var isGoldMember = member => member.hasGold;
-var isNotGoldMember = funcifyr.falsify(isGoldMember);
-
-var isNotEligible = data.filter(isNotGoldMember);
-
-console.table(isNotEligible);
-
-// (index)      name                       hasGold
-// 0            "Jake Jumanji"             false
-// 1            "Frederick Finkelstein"    false
-// 2            "Gertrude Gretel"          false
-```
-
-
-## funcifyr.fillify(value, times)
+## funcifyr.fill(value, times)
 
 Prefills an array with a value or an object a number of times. Useful for quickly adding filler content.
 ```javascript
@@ -140,11 +112,11 @@ todo example
 ```
 
 
-## funcifyr.flattify()
+## funcifyr.flatten()
 
 Takes any number of arguments and multidimensional arrays and returns a new array with the results flattened.
 ```javascript
-var flattened = funcifyr.flattify('z', [[['y', 4], 3], true], [[2], [[[[[1]]]]], ['x']]);
+var flattened = funcifyr.flatten('z', [[['y', 4], 3], true], [[2], [[[[[1]]]]], ['x']]);
 
 console.log(flattened); //=> ["z", "y", 4, 3, true, 2, 1, "x"]
 ```
@@ -187,7 +159,7 @@ log("Wow I'm saving keystrokes."); //=> Wow I'm saving keystrokes.
 ```
 
 
-## funcifyr.getify(prop)
+## funcifyr.get(prop)
 
 Plucks properties from data objects.
 
@@ -217,8 +189,8 @@ var data = [
   }
 ];
 
-var getNames = funcifyr.getify('name');
-var getEmails = funcifyr.getify('email');
+var getNames = funcifyr.get('name');
+var getEmails = funcifyr.get('email');
 
 var namesFromData = getNames(data);
 var emailsFromData = getEmails(data);
@@ -301,6 +273,34 @@ console.log(getsSeniorDiscount); //=> ["Jebediah the Grey", "Methusaleh the Wise
 ```
 
 
+## funcifyr.negate(fnPredicate)
+
+Creates a negate function that returns true if the result is false.
+
+e.g. You want to grab customers that are NOT Gold members and list them as not eligible.
+```javascript
+var data = [
+  { name: 'Marty Mcfly', hasGold: true },
+  { name: 'Jake Jumanji', hasGold: false },  
+  { name: 'Frederick Finkelstein', hasGold: false },  
+  { name: 'Gertrude Gretchen', hasGold: false },  
+  { name: 'Agnes Agatha', hasGold: true }
+];
+
+var isGoldMember = member => member.hasGold;
+var isNotGoldMember = funcifyr.negate(isGoldMember);
+
+var isNotEligible = data.filter(isNotGoldMember);
+
+console.table(isNotEligible);
+
+// (index)      name                       hasGold
+// 0            "Jake Jumanji"             false
+// 1            "Frederick Finkelstein"    false
+// 2            "Gertrude Gretel"          false
+```
+
+
 ## funcifyr.orify(fn1, fn2)
 
 Runs two predicate functions on an argument and returns true if one OR the other is true.
@@ -345,7 +345,7 @@ japaneseGreet('how are you?'); //=> Konnichiwa, how are you?
 ```
 
 
-## funcifyr.pipeify(fns)
+## funcifyr.pipe(fns)
 
 Runs a function on the passed-in results of another function. Same as compose but function order is reversed.
 ```javascript
@@ -369,21 +369,21 @@ var getInitials = names => {
   });
 }
 
-var pluckInitials = funcifyr.pipeify(getNames, getInitials);
+var pluckInitials = funcifyr.pipe(getNames, getInitials);
 
 console.log(pluckInitials(data)); //=> ["SM", "AB", "MG", "HM", "BD"]
 ```
 
 
-## funcifyr.repeatify(str, times)
+## funcifyr.repeat(str, times)
 
 Repeats a string a number of times.
 ```javascript
-funcifyr.repeatify('repeat', 8) //=> "repeatrepeatrepeatrepeatrepeatrepeatrepeatrepeat"
+funcifyr.repeat('repeat', 8) //=> "repeatrepeatrepeatrepeatrepeatrepeatrepeatrepeat"
 ```
 
 
-## funcifyr.styleify(styleObject)
+## funcifyr.style(styleObject)
 
 Creates functions from style objects to place inline styles on DOM elements.
 ```javascript
