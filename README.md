@@ -12,6 +12,7 @@ F.fillify() // returns an array prefilled with a value
 F.flattify() // flattens multidimensional arrays
 F.fluentify() // used for method chaining
 F.funcify() // turns a method into a regular function
+F.groupBy() // groups together related prop values from objects
 F.isify() // creates a type checker
 F.lessthanify() // tests for values less than x
 F.map() // runs a callback on an unmappable collection
@@ -156,6 +157,38 @@ Takes a method of an object and turns it into a regular function. For example, s
 var log = funcifyr.funcify(console, 'log');
 
 log("Wow I'm saving keystrokes."); //=> Wow I'm saving keystrokes.
+```
+
+
+## funcifyr.groupBy(key)
+
+Groups together related property values from objects.
+```javascript
+var arr = [
+  { name: 'Osiris', age: 41, location: 'New York' },
+  { name: 'Ishtar', age: 33, location: 'New York' },
+  { name: 'Zeus', age: 25, location: 'California' },
+  { name: 'Venus', age: 27, location: 'New York' },
+  { name: 'Maat', age: 21, location: 'California' },
+];
+
+var groupByLocation = funcifyr.groupBy('location');
+var groupedByLocation = groupByLocation(arr);
+
+JSON.stringify(groupedByLocation);
+/*
+{
+  "New York": [
+    { "name": "Osiris", "age": 41, "location": "New York" },
+    { "name": "Ishtar", "age": 33, "location": "New York" },
+    { "name": "Venus", "age": 27, "location": "New York" }
+  ],
+  "California": [
+    { "name": "Zeus", "age": 25, "location": "California" },
+    { "name": "Maat", "age": 21, "location": "California" }
+  ]
+}
+*/
 ```
 
 
