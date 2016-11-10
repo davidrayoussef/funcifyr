@@ -85,7 +85,7 @@
         }
       },
 
-      // groups together related prop values from objects into an array
+      // groups together related prop values from objects
       groupBy: function(key) {
         return function grouped(arr) {
           return arr.reduce(function(obj, item) {
