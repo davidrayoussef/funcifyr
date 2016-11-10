@@ -132,6 +132,69 @@ describe('flatten', () => {
   });
 });
 
+describe('groupBy', () => {
+  it('Should return an object...', () => {
+
+    let arr = [
+      { name: 'Osiris', location: 'New York' },
+      { name: 'Ishtar', location: 'New York' },
+      { name: 'Zeus', location: 'California' },
+      { name: 'Venus', location: 'New York' },
+      { name: 'Maat', location: 'California' },
+    ];
+
+    let groupByLocation = F.groupBy('location');
+    let dataByLocation = groupByLocation(arr);
+
+    let actual = typeof dataByLocation;
+    let expected = 'object';
+
+    assert.equal(actual, expected);
+  });
+});
+
+describe('groupBy', () => {
+  it('...and object should have a length of 2...', () => {
+
+    let arr = [
+      { name: 'Osiris', location: 'New York' },
+      { name: 'Ishtar', location: 'New York' },
+      { name: 'Zeus', location: 'California' },
+      { name: 'Venus', location: 'New York' },
+      { name: 'Maat', location: 'California' },
+    ];
+
+    let groupByLocation = F.groupBy('location');
+    let dataByLocation = groupByLocation(arr);
+
+    let actual = Object.keys(dataByLocation).length;
+    let expected = 2;
+
+    assert.equal(actual, expected);
+  });
+});
+
+describe('groupBy', () => {
+  it('...and length of property value array of "New York" key should be 3', () => {
+
+    let arr = [
+      { name: 'Osiris', location: 'New York' },
+      { name: 'Ishtar', location: 'New York' },
+      { name: 'Zeus', location: 'California' },
+      { name: 'Venus', location: 'New York' },
+      { name: 'Maat', location: 'California' },
+    ];
+
+    let groupByLocation = F.groupBy('location');
+    let dataByLocation = groupByLocation(arr);
+
+    let actual = dataByLocation['New York'].length;
+    let expected = 3;
+
+    assert.equal(actual, expected);
+  });
+});
+
 describe('negate', () => {
   it('Should return a predicate function that is the opposite of original function', () => {
 
