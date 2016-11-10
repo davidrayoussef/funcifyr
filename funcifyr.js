@@ -78,10 +78,20 @@
         }
       },
 
-      // turns a method into a function
+      // turns a method into a regular function
       funcify: function(obj, methodString) {
         return function funcified(arg) {
           return obj[methodString].call(obj, arg);
+        }
+      },
+
+      // groups together related prop values from objects into an array
+      groupBy: function(key) {
+        return function grouped(arr) {
+          return arr.reduce(function(obj, item) {
+            (obj[item[key]] = obj[item[key]] || []).push(item);
+            return obj;
+          }, {});
         }
       },
 

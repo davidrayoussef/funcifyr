@@ -11,7 +11,7 @@ F.defuncify() // turns a function into a method
 F.fillify() // returns an array prefilled with a value
 F.flattify() // flattens multidimensional arrays
 F.fluentify() // used for method chaining
-F.funcify() // turns a method into a function
+F.funcify() // turns a method into a regular function
 F.isify() // creates a type checker
 F.lessthanify() // tests for values less than x
 F.map() // runs a callback on an unmappable collection
@@ -151,7 +151,7 @@ newCustomer.setName('Alice').setLocation('Wonderland', 'NY').setAge(25).save();
 
 ## funcifyr.funcify(obj, methodString)
 
-Takes a method of an object and turns it into a function. For example, shorten "console.log" to just "log"
+Takes a method of an object and turns it into a regular function. For example, shorten "console.log" to just "log"
 ```javascript
 var log = funcifyr.funcify(console, 'log');
 
