@@ -173,9 +173,9 @@ var arr = [
 ];
 
 var groupByLocation = funcifyr.groupBy('location');
-var groupedByLocation = groupByLocation(arr);
+var dataByLocation = groupByLocation(arr);
 
-JSON.stringify(groupedByLocation);
+JSON.stringify(dataByLocation);
 /*
 {
   "New York": [

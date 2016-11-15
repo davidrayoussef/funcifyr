@@ -2,13 +2,13 @@ import F from '../funcifyr.js';
 import {expect, assert} from 'chai';
 
 describe('andify', () => {
-  it('should return true if arg passed to pred funcs evaluates to true', () => {
+  it('should return true if both predicate functions evaluate to true', () => {
 
     let isString = (a) => typeof a === 'string';
     let isLongerThanSix = (b) => b.length > 6;
-    let testIfStringANDOverSix = F.andify(isString, isLongerThanSix)('funcify all the things');
+    let isStringAndLongerThanSix = F.andify(isString, isLongerThanSix)('funcify all the things');
 
-    expect(testIfStringANDOverSix).to.be.true;
+    expect( isStringAndLongerThanSix ).to.be.true;
 
   });
 });
@@ -21,7 +21,7 @@ describe('arrayify', () => {
     let argumentsObjectToArray = F.arrayify(returnArgs('string', 3));
     let testIfArray = Array.isArray(argumentsObjectToArray);
 
-    expect(testIfArray).to.be.true;
+    expect( testIfArray ).to.be.true;
 
   });
 });
@@ -38,32 +38,18 @@ describe('compose', () => {
 });
 
 describe('curry', () => {
-  it('should return a function', () => {
-
-    let actual = typeof F.curry();
-    let expected = 'function';
-
-    assert.equal(actual, expected);
-
-  });
-});
-
-describe('curry', () => {
-  it('should return a function that takes a function as an argument', () => {
+  it('should return a function that returns a function', () => {
 
     let add = (a, b) => a + b;
     let curredFunction = F.curry(add);
 
-    let actual = typeof curredFunction;
-    let expected = 'function';
-
-    assert.equal(actual, expected);
+    expect(curredFunction).to.be.a('function');
 
   });
 });
 
 describe('curry', () => {
-  it('should return the result of a curried function', () => {
+  it('should return the correct result of a curried function', () => {
 
     let add = (a, b) => a + b;
     let curriedAdd = F.curry(add);
@@ -85,7 +71,7 @@ describe('defuncify', () => {
     let reverseString = str => str.split('').reverse().join('');
     Person.prototype.reverseString = F.defuncify(reverseString);
 
-    expect('reverseString' in Person.prototype).to.be.true;
+    expect( 'reverseString' in Person.prototype ).to.be.true;
 
   });
 });
@@ -114,7 +100,7 @@ describe('flatten', () => {
     let arr = [1, 2, ['3'], true, [[false, 'a'], 'b'], 'c'];
     let flattenedArray = F.flatten(arr);
 
-    expect(Array.isArray(flattenedArray)).to.be.true;
+    expect( Array.isArray(flattenedArray) ).to.be.true;
 
   });
 });
@@ -127,7 +113,7 @@ describe('flatten', () => {
 
     let containsNoNestedArrays = flattenedArray.every(v => !Array.isArray(v));
 
-    expect(containsNoNestedArrays).to.be.true;
+    expect( containsNoNestedArrays ).to.be.true;
 
   });
 });
@@ -150,6 +136,7 @@ describe('groupBy', () => {
     let expected = 'object';
 
     assert.equal(actual, expected);
+
   });
 });
 
@@ -171,6 +158,7 @@ describe('groupBy', () => {
     let expected = 2;
 
     assert.equal(actual, expected);
+
   });
 });
 
@@ -192,6 +180,37 @@ describe('groupBy', () => {
     let expected = 3;
 
     assert.equal(actual, expected);
+    
+  });
+});
+
+describe('isify', () => {
+  it('Should create a function that correctly evaluates value as type boolean', () => {
+
+    let isBoolean = F.isify('boolean');
+
+    expect( isBoolean(false) ).to.be.true;
+
+  });
+});
+
+describe('isify', () => {
+  it('Should create a function that correctly evaluates value as type string', () => {
+
+    let isString = F.isify('string');
+
+    expect( isString('This is a string.') ).to.be.true;
+
+  });
+});
+
+describe('isify', () => {
+  it('Should create a function that correctly evaluates value as type number', () => {
+
+    let isNumber = F.isify('number');
+
+    expect( isNumber(89) ).to.be.true;
+
   });
 });
 
@@ -201,7 +220,7 @@ describe('negate', () => {
     let isTrue = () => true;
     let isFalse = F.negate(isTrue);
 
-    expect(isFalse() === !isTrue()).to.be.true;
+    expect( isFalse() === !isTrue() ).to.be.true;
 
   });
 });
