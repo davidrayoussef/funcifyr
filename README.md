@@ -25,6 +25,7 @@ F.pluck() // plucks props from objects in array
 F.randomify() // returns random integer
 F.repeat() // repeats a string a number of times
 F.styleify() // creates style objects to style HTML elements inline
+F.tally() // returns tally count of a prop value from objects in array
 F.thenify() // creates sequence of chainable actions
 F.uniqify() // removes duplicates
 F.whenify() // runs function when result of a function predicate is true

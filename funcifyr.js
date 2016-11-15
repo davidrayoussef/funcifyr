@@ -186,6 +186,15 @@
         }
       },
 
+      tally: function(prop) {
+        return function tallied(arr) {
+          return arr.reduce(function(acc, item) {
+            acc[item[prop]] = (acc[item[prop]] || 0) + 1;
+            return acc;
+          }, {});
+        }
+      },
+
       // creates sequence of chainable actions
       thenify: function(value) {
         return {
