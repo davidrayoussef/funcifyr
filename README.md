@@ -425,6 +425,38 @@ todo
 ```
 
 
+## funcifyr.tally(prop)
+
+Returns a tally count object of a specific property value from data objects in an array.
+```javascript
+var data = [
+  { name: 'Dave', position: 'Front-End Developer' },
+  { name: 'Jen', position: 'Front-End Developer' },
+  { name: 'Joe', position: 'Network Engineer' },
+  { name: 'Sam', position: 'UX Developer' },
+  { name: 'Pete', position: 'UI Developer' },
+  { name: 'Kim', position: 'Front-End Developer' },
+  { name: 'Jon', position: 'Back-End Developer' },
+  { name: 'Sue', position: 'Dev Ops' },
+  { name: 'Jon', position: 'Back-End Developer' }
+];
+
+var tallyByPosition = F.tally('position');
+var positionTally = tallyByPosition(data);
+JSON.stringify(positionTally); //=>
+/*
+{
+  "Front-End Developer": 3,
+  "Network Engineer": 1,
+  "UX Developer": 1,
+  "UI Developer": 1,
+  "Back-End Developer": 2,
+  "Dev Ops": 1
+}
+*/
+```
+
+
 ## funcifyr.thenify(value)
 
 Creates a sequence of chainable actions.
