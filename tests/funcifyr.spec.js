@@ -41,9 +41,9 @@ describe('curry', () => {
   it('should return a function that returns a function', () => {
 
     let add = (a, b) => a + b;
-    let curredFunction = F.curry(add);
+    let curriedFunction = F.curry(add);
 
-    expect(curredFunction).to.be.a('function');
+    expect( curriedFunction ).to.be.a('function');
 
   });
 });
@@ -180,7 +180,7 @@ describe('groupBy', () => {
     let expected = 3;
 
     assert.equal(actual, expected);
-    
+
   });
 });
 
@@ -221,6 +221,47 @@ describe('negate', () => {
     let isFalse = F.negate(isTrue);
 
     expect( isFalse() === !isTrue() ).to.be.true;
+
+  });
+});
+
+describe('tally', () => {
+  it('Should return an object as result', () => {
+
+    let data = [
+      { name: 'Dave', position: 'Front-End Developer' },
+      { name: 'Jen', position: 'Front-End Developer' },
+      { name: 'Kim', position: 'Front-End Developer' },
+      { name: 'Jon', position: 'Back-End Developer' },
+      { name: 'Sue', position: 'Dev Ops' }
+    ];
+
+    let tallyByPosition = F.tally('position');
+    let positionTally = tallyByPosition(data)
+
+    expect( positionTally ).to.be.an('object');
+
+  });
+});
+
+describe('tally', () => {
+  it('Should return a value of 3 for the key "Front-End Developer"', () => {
+
+    let data = [
+      { name: 'Dave', position: 'Front-End Developer' },
+      { name: 'Jen', position: 'Front-End Developer' },
+      { name: 'Kim', position: 'Front-End Developer' },
+      { name: 'Jon', position: 'Back-End Developer' },
+      { name: 'Sue', position: 'Dev Ops' }
+    ];
+
+    let tallyByPosition = F.tally('position');
+    let positionTally = tallyByPosition(data)
+
+    let actual = positionTally['Front-End Developer'];
+    let expected = 3;
+
+    assert.equal(actual, expected);
 
   });
 });
