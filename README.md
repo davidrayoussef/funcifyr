@@ -110,7 +110,19 @@ String.prototype.reverseString = funcifyr.defuncify(reverseString);
 
 Prefills an array with a value or an object a number of times. Useful for quickly adding filler content.
 ```javascript
-todo example
+var obj = { name: null, email: null, address: null, friends: [] };
+var userDataTemplate = funcifyr.fill(obj, 5);
+
+console.log(userDataTemplate);
+/*
+[
+  {name: null, email: null, address: null, friends: []},
+  {name: null, email: null, address: null, friends: []},
+  {name: null, email: null, address: null, friends: []},
+  {name: null, email: null, address: null, friends: []},
+  {name: null, email: null, address: null, friends: []}
+]
+*/
 ```
 
 
