@@ -4,8 +4,8 @@ import {expect, assert} from 'chai';
 describe('andify', () => {
   it('should return true if both predicate functions evaluate to true', () => {
 
-    let isString = (a) => typeof a === 'string';
-    let isLongerThanSix = (b) => b.length > 6;
+    let isString = s => typeof s === 'string';
+    let isLongerThanSix = n => n.length > 6;
     let isStringAndLongerThanSix = F.andify(isString, isLongerThanSix)('funcify all the things');
 
     expect( isStringAndLongerThanSix ).to.be.true;
@@ -92,7 +92,30 @@ describe('defuncify', () => {
   });
 });
 
-// todo: fill
+describe('fill', () => {
+  it('Should return an array', () => {
+
+    let obj = { name: null, email: null, address: null, friends: [] };
+    let userDataTemplate = F.fill(obj, 10);
+
+    expect( Array.isArray(userDataTemplate) ).to.be.true;
+
+  });
+});
+
+describe('fill', () => {
+  it('Should return an array with a length of 10', () => {
+
+    let obj = { name: null, email: null, address: null, friends: [] };
+    let userDataTemplate = F.fill(obj, 10);
+
+    let actual = userDataTemplate.length;
+    let expected = 10;
+
+    assert.equal(actual, expected);
+
+  });
+});
 
 describe('flatten', () => {
   it('Should return an array', () => {
