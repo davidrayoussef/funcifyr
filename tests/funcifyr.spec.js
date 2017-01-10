@@ -2,6 +2,7 @@ import F from '../funcifyr.js';
 import {expect, assert} from 'chai';
 
 describe('andify', () => {
+
   it('should return true if both predicate functions evaluate to true', () => {
 
     let isString = s => typeof s === 'string';
@@ -11,9 +12,11 @@ describe('andify', () => {
     expect( isStringAndLongerThanSix ).to.be.true;
 
   });
+
 });
 
 describe('arrayify', () => {
+
   it('should turn an array-like collection into a real array', () => {
 
     // Can't test a DOM collection so we'll run test on arguments object
@@ -24,9 +27,11 @@ describe('arrayify', () => {
     expect( testIfArray ).to.be.true;
 
   });
+
 });
 
 describe('compose', () => {
+
   it('should return a function', () => {
 
     let actual = typeof F.compose();
@@ -35,23 +40,23 @@ describe('compose', () => {
     assert.equal(actual, expected);
 
   });
+
 });
 
 describe('curry', () => {
+
+  let add = (a, b) => a + b;
+
   it('should return a function that returns a function', () => {
 
-    let add = (a, b) => a + b;
     let curriedFunction = F.curry(add);
 
     expect( curriedFunction ).to.be.a('function');
 
   });
-});
 
-describe('curry', () => {
   it('should return the correct result of a curried function', () => {
 
-    let add = (a, b) => a + b;
     let curriedAdd = F.curry(add);
     let add5 = curriedAdd(5);
 
@@ -61,28 +66,22 @@ describe('curry', () => {
     assert.equal(actual, expected);
 
   });
+
 });
 
 describe('defuncify', () => {
+
+  class Person {}
+  let reverseString = str => str.split('').reverse().join('');
+  Person.prototype.reverseString = F.defuncify(reverseString);
+
   it('should create a method property from a regular function...', () => {
-
-    class Person {}
-
-    let reverseString = str => str.split('').reverse().join('');
-    Person.prototype.reverseString = F.defuncify(reverseString);
 
     expect( 'reverseString' in Person.prototype ).to.be.true;
 
   });
-});
 
-describe('defuncify', () => {
   it('...and property should be a function', () => {
-
-    class Person {}
-
-    let reverseString = str => str.split('').reverse().join('');
-    Person.prototype.reverseString = F.defuncify(reverseString);
 
     let actual = typeof Person.prototype.reverseString;
     let expected = 'function';
@@ -90,24 +89,21 @@ describe('defuncify', () => {
     assert.equal(actual, expected);
 
   });
+
 });
 
 describe('fill', () => {
-  it('Should return an array', () => {
 
-    let obj = { name: null, email: null, address: null, friends: [] };
-    let userDataTemplate = F.fill(obj, 10);
+  let obj = { name: null, email: null, address: null, friends: [] };
+  let userDataTemplate = F.fill(obj, 10);
+
+  it('Should return an array', () => {
 
     expect( Array.isArray(userDataTemplate) ).to.be.true;
 
   });
-});
 
-describe('fill', () => {
   it('Should return an array with a length of 10', () => {
-
-    let obj = { name: null, email: null, address: null, friends: [] };
-    let userDataTemplate = F.fill(obj, 10);
 
     let actual = userDataTemplate.length;
     let expected = 10;
@@ -115,45 +111,43 @@ describe('fill', () => {
     assert.equal(actual, expected);
 
   });
+
 });
 
 describe('flatten', () => {
-  it('Should return an array', () => {
 
-    let arr = [1, 2, ['3'], true, [[false, 'a'], 'b'], 'c'];
-    let flattenedArray = F.flatten(arr);
+  let arr = [1, 2, ['3'], true, [[false, 'a'], 'b'], 'c'];
+  let flattenedArray = F.flatten(arr);
+
+  it('Should return an array', () => {
 
     expect( Array.isArray(flattenedArray) ).to.be.true;
 
   });
-});
 
-describe('flatten', () => {
   it('Should return a flattened array that contains no nested arrays', () => {
-
-    let arr = [1, 2, ['3'], true, [[false, 'a'], 'b'], 'c'];
-    let flattenedArray = F.flatten(arr);
 
     let containsNoNestedArrays = flattenedArray.every(v => !Array.isArray(v));
 
     expect( containsNoNestedArrays ).to.be.true;
 
   });
+
 });
 
 describe('groupBy', () => {
+
+  let data = [
+    { name: 'Osiris', location: 'New York' },
+    { name: 'Ishtar', location: 'New York' },
+    { name: 'Zeus', location: 'California' },
+    { name: 'Venus', location: 'New York' },
+    { name: 'Maat', location: 'California' },
+  ];
+  let groupByLocation = F.groupBy('location');
+  let dataByLocation = groupByLocation(data);
+
   it('Should return an object...', () => {
-
-    let arr = [
-      { name: 'Osiris', location: 'New York' },
-      { name: 'Ishtar', location: 'New York' },
-      { name: 'Zeus', location: 'California' },
-      { name: 'Venus', location: 'New York' },
-      { name: 'Maat', location: 'California' },
-    ];
-
-    let groupByLocation = F.groupBy('location');
-    let dataByLocation = groupByLocation(arr);
 
     let actual = typeof dataByLocation;
     let expected = 'object';
@@ -161,21 +155,8 @@ describe('groupBy', () => {
     assert.equal(actual, expected);
 
   });
-});
 
-describe('groupBy', () => {
   it('...and object should have a length of 2...', () => {
-
-    let arr = [
-      { name: 'Osiris', location: 'New York' },
-      { name: 'Ishtar', location: 'New York' },
-      { name: 'Zeus', location: 'California' },
-      { name: 'Venus', location: 'New York' },
-      { name: 'Maat', location: 'California' },
-    ];
-
-    let groupByLocation = F.groupBy('location');
-    let dataByLocation = groupByLocation(arr);
 
     let actual = Object.keys(dataByLocation).length;
     let expected = 2;
@@ -183,21 +164,8 @@ describe('groupBy', () => {
     assert.equal(actual, expected);
 
   });
-});
 
-describe('groupBy', () => {
   it('...and length of property value array of "New York" key should be 3', () => {
-
-    let arr = [
-      { name: 'Osiris', location: 'New York' },
-      { name: 'Ishtar', location: 'New York' },
-      { name: 'Zeus', location: 'California' },
-      { name: 'Venus', location: 'New York' },
-      { name: 'Maat', location: 'California' },
-    ];
-
-    let groupByLocation = F.groupBy('location');
-    let dataByLocation = groupByLocation(arr);
 
     let actual = dataByLocation['New York'].length;
     let expected = 3;
@@ -205,9 +173,11 @@ describe('groupBy', () => {
     assert.equal(actual, expected);
 
   });
+
 });
 
 describe('isify', () => {
+
   it('Should create a function that correctly evaluates value as type boolean', () => {
 
     let isBoolean = F.isify('boolean');
@@ -215,9 +185,7 @@ describe('isify', () => {
     expect( isBoolean(false) ).to.be.true;
 
   });
-});
 
-describe('isify', () => {
   it('Should create a function that correctly evaluates value as type string', () => {
 
     let isString = F.isify('string');
@@ -225,9 +193,7 @@ describe('isify', () => {
     expect( isString('This is a string.') ).to.be.true;
 
   });
-});
 
-describe('isify', () => {
   it('Should create a function that correctly evaluates value as type number', () => {
 
     let isNumber = F.isify('number');
@@ -235,9 +201,11 @@ describe('isify', () => {
     expect( isNumber(89) ).to.be.true;
 
   });
+
 });
 
 describe('negate', () => {
+
   it('Should return a predicate function that is the opposite of original function', () => {
 
     let isTrue = () => true;
@@ -246,40 +214,28 @@ describe('negate', () => {
     expect( isFalse() === !isTrue() ).to.be.true;
 
   });
+
 });
 
 describe('tally', () => {
+
+  let data = [
+    { name: 'Dave', position: 'Front-End Developer' },
+    { name: 'Jen', position: 'Front-End Developer' },
+    { name: 'Kim', position: 'Front-End Developer' },
+    { name: 'Jon', position: 'Back-End Developer' },
+    { name: 'Sue', position: 'Dev Ops' }
+  ];
+  let tallyByPosition = F.tally('position');
+  let positionTally = tallyByPosition(data)
+
   it('Should return an object as result', () => {
-
-    let data = [
-      { name: 'Dave', position: 'Front-End Developer' },
-      { name: 'Jen', position: 'Front-End Developer' },
-      { name: 'Kim', position: 'Front-End Developer' },
-      { name: 'Jon', position: 'Back-End Developer' },
-      { name: 'Sue', position: 'Dev Ops' }
-    ];
-
-    let tallyByPosition = F.tally('position');
-    let positionTally = tallyByPosition(data)
 
     expect( positionTally ).to.be.an('object');
 
   });
-});
 
-describe('tally', () => {
   it('Should return a value of 3 for the key "Front-End Developer"', () => {
-
-    let data = [
-      { name: 'Dave', position: 'Front-End Developer' },
-      { name: 'Jen', position: 'Front-End Developer' },
-      { name: 'Kim', position: 'Front-End Developer' },
-      { name: 'Jon', position: 'Back-End Developer' },
-      { name: 'Sue', position: 'Dev Ops' }
-    ];
-
-    let tallyByPosition = F.tally('position');
-    let positionTally = tallyByPosition(data)
 
     let actual = positionTally['Front-End Developer'];
     let expected = 3;
@@ -287,4 +243,5 @@ describe('tally', () => {
     assert.equal(actual, expected);
 
   });
+  
 });
