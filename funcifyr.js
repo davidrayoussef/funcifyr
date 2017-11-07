@@ -27,6 +27,21 @@
         return Array.from ? Array.from(collection) : Array.apply(null, collection);
       },
 
+      // returns an array of arrays or strings in chunks of n
+      chunkBy: function(n) {
+        return function chunk(arg) {
+          if ( Array.isArray(arg) ) {
+            return arg.reduce((acc,_,i,a) => {
+              return i % n === 0 ? acc.concat( [a.slice(i, i + n)] ) : acc;
+            }, []);
+          }
+          else if ( typeof arg === 'string' ) {
+            return arg.match( new RegExp('.{1,' + n + '}', 'g') ) || [];
+          }
+          else throw new TypeError('Incorrect type. Passed in value should be an array or string.');
+        }
+      },
+
       // creates a function from two functions
       compose: function(fn1, fn2) {
         return function composed() {

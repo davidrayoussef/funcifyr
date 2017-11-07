@@ -5,6 +5,7 @@ funcifyr.js is a functional library used for function creation, combination, com
 ```javascript
 F.andify() // runs 2 functions on arg, returns true if both true
 F.arrayify() // converts NodeList into an Array
+F.chunkBy() // returns an array of arrays or strings in chunks of n
 F.compose() // creates new function from two functions
 F.curry() // takes a function with multiple params, returns a function with one param
 F.defuncify() // turns a function into a method
@@ -75,6 +76,18 @@ iterableCollection.map(el => el.className += ' new-class');
 ```
 
 
+## funcifyr.chunkBy(n)
+
+Creates a function that returns an array of arrays or strings in chunks of n.
+```javascript
+var chunkBy2 = funcifyr.chunkBy(2);
+console.log( chunkBy2([1,2,3,4,5,6,7,8]) ); //=> [[1,2],[3,4],[5,6],[7,8]]
+
+var chunkBy3 = funcifyr.chunkBy(3);
+console.log( chunkBy3('Hello world') ); //=> ["Hel", "lo ", "wor", "ld"]
+```
+
+
 ## funcifyr.compose(fn1, fn2)
 
 Creates a composed function by applying one function to the output of another function.
@@ -83,7 +96,7 @@ var getFirstLastName = person => person.split(' ');
 var reverseOrder = names => `${names[1]}, ${names[0]}`;
 var lastNameFirst = funcifyr.compose(reverseOrder, getFirstLastName);
 
-console.log(lastNameFirst('Joe Schmoe')); //=> Schmoe, Joe
+console.log( lastNameFirst('Joe Schmoe') ); //=> Schmoe, Joe
 ```
 
 
@@ -153,7 +166,7 @@ Customer.prototype.setLocation = funcifyr.fluentify(function(city, state) {
 });
 
 Customer.prototype.save = function() {
-  console.log(`Saving new account for ${this.age} year old ${this.name} from ${this.city}, ${this.state}...`);
+  console.log( `Saving new account for ${this.age} year old ${this.name} from ${this.city}, ${this.state}...` );
 };
 
 var newCustomer = new Customer();
@@ -376,7 +389,7 @@ var getInitials = names => {
 
 var pluckInitials = funcifyr.pipe(getNames, getInitials);
 
-console.log(pluckInitials(data)); //=> ["SM", "AB", "MG", "HM", "BD"]
+console.log( pluckInitials(data) ); //=> ["SM", "AB", "MG", "HM", "BD"]
 ```
 
 
