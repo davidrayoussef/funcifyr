@@ -13,7 +13,7 @@ F.flattify() // flattens multidimensional arrays
 F.fluentify() // used for method chaining
 F.funcify() // turns a method into a regular function
 F.groupBy() // groups together related prop values from objects
-F.isify() // creates a type checker
+F.is() // creates a type checker
 F.lessthanify() // tests for values less than x
 F.map() // runs a callback on an unmappable collection
 F.morethanify() // tests for values more than x
@@ -205,14 +205,14 @@ JSON.stringify(dataByLocation);
 ```
 
 
-## funcifyr.isify(type)
+## funcifyr.is(type)
 
 Creates a function that checks whether a value is a certain type.
 
 ```javascript
-var isBoolean = funcifyr.isify('boolean');
-var isNumber = funcifyr.isify('number');
-var isString = funcifyr.isify('string');
+var isBoolean = funcifyr.is('boolean');
+var isNumber = funcifyr.is('number');
+var isString = funcifyr.is('string');
 
 isBoolean(0); //=> false
 isBoolean(false); //=> true

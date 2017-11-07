@@ -64,7 +64,7 @@
       },
 
       // takes any number of arguments and multidimensional arrays and returns new array with results flattened
-      flatten: function(){
+      flatten: function() {
         return [].slice.call(arguments).reduce(function(a, b) {
           return a.concat(Array.isArray(b) ? funcifyr.flatten.apply(null, b) : b);
         }, []);
@@ -96,9 +96,9 @@
       },
 
       // creates a type checker
-      isify: function(type) {
-        return function isified(value) {
-          return typeof value === type;
+      is: function(type) {
+        return function(value) {
+          return type === ({}.toString.call(value).slice(8, -1).toLowerCase());
         }
       },
 

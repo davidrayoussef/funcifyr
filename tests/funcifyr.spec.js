@@ -176,11 +176,11 @@ describe('groupBy', () => {
 
 });
 
-describe('isify', () => {
+describe('is', () => {
 
   it('Should create a function that correctly evaluates value as type boolean', () => {
 
-    let isBoolean = F.isify('boolean');
+    let isBoolean = F.is('boolean');
 
     expect( isBoolean(false) ).to.be.true;
 
@@ -188,7 +188,7 @@ describe('isify', () => {
 
   it('Should create a function that correctly evaluates value as type string', () => {
 
-    let isString = F.isify('string');
+    let isString = F.is('string');
 
     expect( isString('This is a string.') ).to.be.true;
 
@@ -196,7 +196,7 @@ describe('isify', () => {
 
   it('Should create a function that correctly evaluates value as type number', () => {
 
-    let isNumber = F.isify('number');
+    let isNumber = F.is('number');
 
     expect( isNumber(89) ).to.be.true;
 
@@ -243,5 +243,5 @@ describe('tally', () => {
     assert.equal(actual, expected);
 
   });
-  
+
 });
