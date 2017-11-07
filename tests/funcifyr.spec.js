@@ -5,9 +5,9 @@ describe('andify', () => {
 
   it('should return true if both predicate functions evaluate to true', () => {
 
-    let isString = s => typeof s === 'string';
-    let isLongerThanSix = n => n.length > 6;
-    let isStringAndLongerThanSix = F.andify(isString, isLongerThanSix)('funcify all the things');
+    const isString = (s) => typeof s === 'string';
+    const isLongerThanSix = (n) => n.length > 6;
+    const isStringAndLongerThanSix = F.andify(isString, isLongerThanSix)('funcify all the things');
 
     expect( isStringAndLongerThanSix ).to.be.true;
 
@@ -20,11 +20,54 @@ describe('arrayify', () => {
   it('should turn an array-like collection into a real array', () => {
 
     // Can't test a DOM collection so we'll run test on arguments object
-    let returnArgs = () => arguments;
-    let argumentsObjectToArray = F.arrayify(returnArgs('string', 3));
-    let testIfArray = Array.isArray(argumentsObjectToArray);
+    const returnArgs = () => arguments;
+    const argumentsObjectToArray = F.arrayify(returnArgs('string', 3));
+    const testIfArray = Array.isArray(argumentsObjectToArray);
 
     expect( testIfArray ).to.be.true;
+
+  });
+
+});
+
+describe('chunkBy', () => {
+
+  it('should return a function', () => {
+
+    const actual = typeof F.chunkBy(3);
+    const expected = 'function';
+
+    assert.equal(actual, expected);
+
+  });
+
+  it('should slice an array of values into chunks of 2', () => {
+
+    const chunkBy2 = F.chunkBy(2);
+
+    const actual = JSON.stringify( chunkBy2([1,2,3,4,5,6,7,8]) );
+    const expected = "[[1,2],[3,4],[5,6],[7,8]]";
+
+    assert.equal(actual, expected);
+
+  });
+
+  it('should slice a string into chunks of 3 characters each', () => {
+
+    const chunkBy3 = F.chunkBy(3);
+
+    const actual = JSON.stringify( chunkBy3('Hello world') );
+    const expected = '["Hel","lo ","wor","ld"]';
+
+    assert.equal(actual, expected);
+
+  });
+
+  it('should throw an error if value passed is not a string or an array', () => {
+
+    const chunkBy3 = F.chunkBy(3);
+
+    expect( () => chunkBy3(undefined) ).to.throw();
 
   });
 
@@ -34,8 +77,8 @@ describe('compose', () => {
 
   it('should return a function', () => {
 
-    let actual = typeof F.compose();
-    let expected = 'function';
+    const actual = typeof F.compose();
+    const expected = 'function';
 
     assert.equal(actual, expected);
 
@@ -45,11 +88,11 @@ describe('compose', () => {
 
 describe('curry', () => {
 
-  let add = (a, b) => a + b;
+  const add = (a, b) => a + b;
 
   it('should return a function that returns a function', () => {
 
-    let curriedFunction = F.curry(add);
+    const curriedFunction = F.curry(add);
 
     expect( curriedFunction ).to.be.a('function');
 
@@ -57,11 +100,11 @@ describe('curry', () => {
 
   it('should return the correct result of a curried function', () => {
 
-    let curriedAdd = F.curry(add);
-    let add5 = curriedAdd(5);
+    const curriedAdd = F.curry(add);
+    const add5 = curriedAdd(5);
 
-    let actual = add5(6);
-    let expected = 11;
+    const actual = add5(6);
+    const expected = 11;
 
     assert.equal(actual, expected);
 
@@ -72,7 +115,7 @@ describe('curry', () => {
 describe('defuncify', () => {
 
   class Person {}
-  let reverseString = str => str.split('').reverse().join('');
+  const reverseString = (str) => str.split('').reverse().join('');
   Person.prototype.reverseString = F.defuncify(reverseString);
 
   it('should create a method property from a regular function...', () => {
@@ -83,8 +126,8 @@ describe('defuncify', () => {
 
   it('...and property should be a function', () => {
 
-    let actual = typeof Person.prototype.reverseString;
-    let expected = 'function';
+    const actual = typeof Person.prototype.reverseString;
+    const expected = 'function';
 
     assert.equal(actual, expected);
 
@@ -105,8 +148,8 @@ describe('fill', () => {
 
   it('Should return an array with a length of 10', () => {
 
-    let actual = userDataTemplate.length;
-    let expected = 10;
+    const actual = userDataTemplate.length;
+    const expected = 10;
 
     assert.equal(actual, expected);
 
@@ -127,7 +170,7 @@ describe('flatten', () => {
 
   it('Should return a flattened array that contains no nested arrays', () => {
 
-    let containsNoNestedArrays = flattenedArray.every(v => !Array.isArray(v));
+    const containsNoNestedArrays = flattenedArray.every(v => !Array.isArray(v));
 
     expect( containsNoNestedArrays ).to.be.true;
 
@@ -144,13 +187,13 @@ describe('groupBy', () => {
     { name: 'Venus', location: 'New York' },
     { name: 'Maat', location: 'California' },
   ];
-  let groupByLocation = F.groupBy('location');
+  const groupByLocation = F.groupBy('location');
   let dataByLocation = groupByLocation(data);
 
   it('Should return an object...', () => {
 
-    let actual = typeof dataByLocation;
-    let expected = 'object';
+    const actual = typeof dataByLocation;
+    const expected = 'object';
 
     assert.equal(actual, expected);
 
@@ -158,8 +201,8 @@ describe('groupBy', () => {
 
   it('...and object should have a length of 2...', () => {
 
-    let actual = Object.keys(dataByLocation).length;
-    let expected = 2;
+    const actual = Object.keys(dataByLocation).length;
+    const expected = 2;
 
     assert.equal(actual, expected);
 
@@ -167,8 +210,8 @@ describe('groupBy', () => {
 
   it('...and length of property value array of "New York" key should be 3', () => {
 
-    let actual = dataByLocation['New York'].length;
-    let expected = 3;
+    const actual = dataByLocation['New York'].length;
+    const expected = 3;
 
     assert.equal(actual, expected);
 
@@ -180,7 +223,7 @@ describe('is', () => {
 
   it('Should create a function that correctly evaluates value as type boolean', () => {
 
-    let isBoolean = F.is('boolean');
+    const isBoolean = F.is('boolean');
 
     expect( isBoolean(false) ).to.be.true;
 
@@ -188,7 +231,7 @@ describe('is', () => {
 
   it('Should create a function that correctly evaluates value as type string', () => {
 
-    let isString = F.is('string');
+    const isString = F.is('string');
 
     expect( isString('This is a string.') ).to.be.true;
 
@@ -196,7 +239,7 @@ describe('is', () => {
 
   it('Should create a function that correctly evaluates value as type number', () => {
 
-    let isNumber = F.is('number');
+    const isNumber = F.is('number');
 
     expect( isNumber(89) ).to.be.true;
 
@@ -208,8 +251,8 @@ describe('negate', () => {
 
   it('Should return a predicate function that is the opposite of original function', () => {
 
-    let isTrue = () => true;
-    let isFalse = F.negate(isTrue);
+    const isTrue = () => true;
+    const isFalse = F.negate(isTrue);
 
     expect( isFalse() === !isTrue() ).to.be.true;
 
@@ -226,7 +269,7 @@ describe('tally', () => {
     { name: 'Jon', position: 'Back-End Developer' },
     { name: 'Sue', position: 'Dev Ops' }
   ];
-  let tallyByPosition = F.tally('position');
+  const tallyByPosition = F.tally('position');
   let positionTally = tallyByPosition(data)
 
   it('Should return an object as result', () => {
@@ -237,8 +280,8 @@ describe('tally', () => {
 
   it('Should return a value of 3 for the key "Front-End Developer"', () => {
 
-    let actual = positionTally['Front-End Developer'];
-    let expected = 3;
+    const actual = positionTally['Front-End Developer'];
+    const expected = 3;
 
     assert.equal(actual, expected);
 
