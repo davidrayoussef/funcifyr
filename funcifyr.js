@@ -16,7 +16,7 @@
     return {
 
       // runs two predicate functions on an argument and returns true if both are true
-      andify: function(fn1, fn2) {
+      and: function(fn1, fn2) {
         return function andified(arg) {
           return fn1.call(null, arg) && fn2.call(null, arg);
         }
@@ -118,8 +118,8 @@
       },
 
       // creates predicate function to test for numbers less than x
-      lessthanify: function(x) {
-        return function lessthanified(y) {
+      lessThan: function(x) {
+        return function lessThanified(y) {
           return y < x;
         }
       },
@@ -132,8 +132,8 @@
       },
 
       // creates predicate function to test for numbers greater than x
-      morethanify: function(x) {
-        return function morethanified(y) {
+      moreThan: function(x) {
+        return function moreThanified(y) {
           return y > x;
         }
       },
@@ -146,7 +146,7 @@
       },
 
       // runs two predicate functions on an argument, returns true if one OR the other is true
-      orify: function(fn1, fn2) {
+      or: function(fn1, fn2) {
         return function orified(arg) {
           return fn1.call(null, arg) || fn2.call(null, arg);
         }
@@ -181,7 +181,7 @@
       },
 
       // returns a random integer between min and max
-      randomify: function(min, max) {
+      random: function(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
       },
 
@@ -192,9 +192,21 @@
         }).join('');
       },
 
+      // randomly shuffles items in an array
+      shuffle: function(arr) {
+        for (var i = 0; i < arr.length; i++) {
+          var randIndex = Math.floor(Math.random() * arr.length);
+          var temp = arr[randIndex];
+          arr[randIndex] = arr[i];
+          arr[i] = temp;
+        }
+
+        return arr;
+      },
+
       // creates functions from style objects to place inline styles on elements
-      styleify: function(styleObject) {
-        return function styleified(element) {
+      style: function(styleObject) {
+        return function styled(element) {
           return Object.keys(styleObject).map(function(property) {
             element.style[property] = property;
           });
@@ -225,7 +237,7 @@
       },
 
       // takes an array with duplicates and returns a new one with all dupes removed
-      uniqify: function(arr) {
+      unique: function(arr) {
         return Array.from ? Array.from(new Set(arr)) : arr.filter(function(v,i,a) {
           return i === a.indexOf(v);
         });

@@ -3,7 +3,7 @@ funcifyr.js is a functional library used for function creation, combination, com
 
 # tl;dr
 ```javascript
-F.andify() // runs 2 functions on arg, returns true if both true
+F.and() // runs 2 functions on arg, returns true if both true
 F.arrayify() // converts NodeList into an Array
 F.chunkBy() // returns an array of arrays or strings in chunks of n
 F.compose() // creates new function from two functions
@@ -15,26 +15,27 @@ F.fluentify() // used for method chaining
 F.funcify() // turns a method into a regular function
 F.groupBy() // groups together related prop values from objects
 F.is() // creates a type checker
-F.lessthanify() // tests for values less than x
+F.lessThan() // tests for values less than x
 F.map() // runs a callback on an unmappable collection
-F.morethanify() // tests for values more than x
+F.moreThan() // tests for values more than x
 F.negate() // creates a function that returns the opposite of a predicate
-F.orify() // runs 2 functions on arg, returns true if either true
+F.or() // runs 2 functions on arg, returns true if either true
 F.partialify() // creates copy of a function with preset first param
 F.pipe() // runs a function on passed-in results of another
 F.pluck() // plucks props from objects in array
-F.randomify() // returns random integer
+F.random() // returns random integer
 F.repeat() // repeats a string a number of times
-F.styleify() // creates style objects to style HTML elements inline
+F.shuffle() // randomly shuffles items in an array
+F.style() // creates style objects to style HTML elements inline
 F.tally() // returns tally count of a prop value from objects in array
 F.thenify() // creates sequence of chainable actions
-F.uniqify() // removes duplicates
+F.unique() // removes duplicates
 F.whenify() // runs function when result of a function predicate is true
 
 ```
 
 # Examples
-## funcifyr.andify(fn1, fn2)
+## funcifyr.and(fn1, fn2)
 
 Runs two predicate functions on an argument and returns true if both are true.
 
@@ -42,7 +43,7 @@ e.g. You want to check if something is a string AND has more than 6 characters..
 ```javascript
 var isString = str => typeof str === 'string';
 var isLongerThanSix = str => str.length > 6;
-var isValid = funcifyr.andify(isString, isLongerThanSix);
+var isValid = funcifyr.and(isString, isLongerThanSix);
 
 isValid(55); //=> false
 isValid('funci'); //=> false
@@ -236,13 +237,13 @@ isString('str'); //=> true
 ```
 
 
-## funcifyr.lessthanify(x)
+## funcifyr.lessThan(x)
 
 Creates a predicate function to test for values LESS than x.
 
 ```javascript
-var isLessThan65 = funcifyr.lessthanify(65);
-var isMoreThan21 = funcifyr.morethanify(21);
+var isLessThan65 = funcifyr.lessThan(65);
+var isMoreThan21 = funcifyr.moreThan(21);
 
 var data = [  
   { name: 'Lisa the Lawyer', age: 40 },
@@ -266,12 +267,12 @@ console.table(targetClients);
 ```
 
 
-## funcifyr.morethanify(x)
+## funcifyr.moreThan(x)
 
 Creates a predicate function to test for values MORE than x.
 
 ```javascript
-var isMoreThan80 = funcifyr.morethanify(80);
+var isMoreThan80 = funcifyr.moreThan(80);
 
 var data = [  
   { name: 'Lisa the Lawyer', age: 40 },
@@ -319,7 +320,7 @@ console.table(isNotEligible);
 ```
 
 
-## funcifyr.orify(fn1, fn2)
+## funcifyr.or(fn1, fn2)
 
 Runs two predicate functions on an argument and returns true if one OR the other is true.
 
@@ -336,7 +337,7 @@ var data = [
 var isGoldMember = member => member.hasGold;
 var isYearSubscriber = member => member.monthsSubscribed === 12;
 
-var isEligible = data.filter(funcifyr.orify(isGoldMember, isYearSubscriber));
+var isEligible = data.filter( funcifyr.or(isGoldMember, isYearSubscriber) );
 
 console.table(isEligible);
 // (index)      name                     monthsSubscribed    hasGold
@@ -438,11 +439,20 @@ console.log(emailsFromData); //=> ["gina@gmail.com", "lucy@gmail.com", "al@gmail
 
 Repeats a string a number of times.
 ```javascript
-funcifyr.repeat('repeat', 8) //=> "repeatrepeatrepeatrepeatrepeatrepeatrepeatrepeat"
+funcifyr.repeat('repeat', 8); //=> "repeatrepeatrepeatrepeatrepeatrepeatrepeatrepeat"
 ```
 
 
-## funcifyr.styleify(styleObject)
+## funcifyr.shuffle(arr)
+
+Randomly shuffles items in an array.
+```javascript
+funcifyr.shuffle([1,2,3,4,5,6,7,8,9]); //=> [5, 9, 8, 2, 1, 7, 6, 3, 4]
+funcifyr.shuffle([1,2,3,4,5,6,7,8,9]); //=> [3, 5, 4, 6, 2, 9, 1, 8, 7]
+```
+
+
+## funcifyr.style(styleObject)
 
 Creates functions from style objects to place inline styles on DOM elements.
 ```javascript
@@ -490,13 +500,13 @@ todo
 ```
 
 
-## funcifyr.uniqify(arr)
+## funcifyr.unique(arr)
 
 Takes an array which might have duplicates and returns a new array with all dupes removed.
 ```javascript
 var arrWithDupes = ['a', 1, 1, 'a', 'a', 'b', 2, 'b', 2, 2, 'b', 'c', 3, 3];
 
-var uniqified = funcifyr.uniqify(arrWithDupes);
+var uniqified = funcifyr.unique(arrWithDupes);
 
 console.log(uniqified); //=> ["a", 1, "b", 2, "c", 3]
 ```

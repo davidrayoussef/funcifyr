@@ -1,13 +1,13 @@
 import F from '../funcifyr.js';
-import {expect, assert} from 'chai';
+import { expect, assert } from 'chai';
 
-describe('andify', () => {
+describe('and', () => {
 
   it('should return true if both predicate functions evaluate to true', () => {
 
     const isString = (s) => typeof s === 'string';
     const isLongerThanSix = (n) => n.length > 6;
-    const isStringAndLongerThanSix = F.andify(isString, isLongerThanSix)('funcify all the things');
+    const isStringAndLongerThanSix = F.and(isString, isLongerThanSix)('Hello world!');
 
     expect( isStringAndLongerThanSix ).to.be.true;
 
@@ -67,7 +67,7 @@ describe('chunkBy', () => {
 
     const chunkBy3 = F.chunkBy(3);
 
-    expect( () => chunkBy3(undefined) ).to.throw();
+    expect( () => chunkBy3(undefined) ).to.throw(TypeError);
 
   });
 
@@ -255,6 +255,26 @@ describe('negate', () => {
     const isFalse = F.negate(isTrue);
 
     expect( isFalse() === !isTrue() ).to.be.true;
+
+  });
+
+});
+
+describe('shuffle', () => {
+
+  it('Should pass randomness test', () => {
+
+    const oneTo100 = Array.from({length: 100}, (_,i) => i + 1);
+    let results = [];
+
+    for (let i = 0; i < 100; i++) {
+      const shuffled = F.shuffle( oneTo100.slice() );
+      results.push( JSON.stringify(shuffled) );
+    }
+
+    const uniqueResultsCount = new Set(results).size;
+
+    expect( uniqueResultsCount > 90 ).to.be.true;
 
   });
 
