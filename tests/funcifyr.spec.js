@@ -112,29 +112,6 @@ describe('curry', () => {
 
 });
 
-describe('defuncify', () => {
-
-  class Person {}
-  const reverseString = (str) => str.split('').reverse().join('');
-  Person.prototype.reverseString = F.defuncify(reverseString);
-
-  it('should create a method property from a regular function...', () => {
-
-    expect( 'reverseString' in Person.prototype ).to.be.true;
-
-  });
-
-  it('...and property should be a function', () => {
-
-    const actual = typeof Person.prototype.reverseString;
-    const expected = 'function';
-
-    assert.equal(actual, expected);
-
-  });
-
-});
-
 describe('fill', () => {
 
   let obj = { name: null, email: null, address: null, friends: [] };
@@ -188,7 +165,7 @@ describe('groupBy', () => {
     { name: 'Maat', location: 'California' },
   ];
   const groupByLocation = F.groupBy('location');
-  let dataByLocation = groupByLocation(data);
+  const dataByLocation = groupByLocation(data);
 
   it('Should return an object...', () => {
 

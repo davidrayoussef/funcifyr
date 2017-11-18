@@ -1,18 +1,16 @@
 # funcifyr.js
 funcifyr.js is a functional library used for function creation, combination, composition and decoration.
 
-# tl;dr
+# tldr
 ```javascript
 F.and() // runs 2 functions on arg, returns true if both true
 F.arrayify() // converts NodeList into an Array
 F.chunkBy() // returns an array of arrays or strings in chunks of n
 F.compose() // creates new function from two functions
 F.curry() // takes a function with multiple params, returns a function with one param
-F.defuncify() // turns a function into a method
-F.fillify() // returns an array prefilled with a value
-F.flattify() // flattens multidimensional arrays
+F.fill() // returns an array prefilled with a value
+F.flatten() // flattens multidimensional arrays
 F.fluentify() // used for method chaining
-F.funcify() // turns a method into a regular function
 F.groupBy() // groups together related prop values from objects
 F.is() // creates a type checker
 F.lessThan() // tests for values less than x
@@ -20,17 +18,16 @@ F.map() // runs a callback on an unmappable collection
 F.moreThan() // tests for values more than x
 F.negate() // creates a function that returns the opposite of a predicate
 F.or() // runs 2 functions on arg, returns true if either true
-F.partialify() // creates copy of a function with preset first param
+F.partial() // creates copy of a function with preset first param
 F.pipe() // runs a function on passed-in results of another
 F.pluck() // plucks props from objects in array
 F.random() // returns random integer
 F.repeat() // repeats a string a number of times
 F.shuffle() // randomly shuffles items in an array
-F.style() // creates style objects to style HTML elements inline
 F.tally() // returns tally count of a prop value from objects in array
 F.thenify() // creates sequence of chainable actions
 F.unique() // removes duplicates
-F.whenify() // runs function when result of a function predicate is true
+F.when() // runs function when result of a function predicate is true
 
 ```
 
@@ -41,8 +38,8 @@ Runs two predicate functions on an argument and returns true if both are true.
 
 e.g. You want to check if something is a string AND has more than 6 characters...
 ```javascript
-var isString = str => typeof str === 'string';
-var isLongerThanSix = str => str.length > 6;
+var isString = (str) => typeof str === 'string';
+var isLongerThanSix = (str) => str.length > 6;
 var isValid = funcifyr.and(isString, isLongerThanSix);
 
 isValid(55); //=> false
@@ -93,8 +90,8 @@ console.log( chunkBy3('Hello world') ); //=> ["Hel", "lo ", "wor", "ld"]
 
 Creates a composed function by applying one function to the output of another function.
 ```javascript
-var getFirstLastName = person => person.split(' ');
-var reverseOrder = names => `${names[1]}, ${names[0]}`;
+var getFirstLastName = (person) => person.split(' ');
+var reverseOrder = (names) => `${names[1]}, ${names[0]}`;
 var lastNameFirst = funcifyr.compose(reverseOrder, getFirstLastName);
 
 console.log( lastNameFirst('Joe Schmoe') ); //=> Schmoe, Joe
@@ -106,17 +103,6 @@ console.log( lastNameFirst('Joe Schmoe') ); //=> Schmoe, Joe
 Translates a function that takes multiple arguments into a series of functions that each take one argument, and continues until it receives all its arguments.
 ```javascript
 todo example
-```
-
-
-## funcifyr.defuncify(fn)
-
-Takes a function and turns it into a method.
-```javascript
-var reverseString = str => str.split('').reverse().join('');
-String.prototype.reverseString = funcifyr.defuncify(reverseString);
-
-'funcifyr'.reverseString(); //=> ryficnuf
 ```
 
 
@@ -177,19 +163,9 @@ newCustomer.setName('Alice').setLocation('Wonderland', 'NY').setAge(25).save();
 ```
 
 
-## funcifyr.funcify(obj, methodString)
-
-Takes a method of an object and turns it into a regular function. For example, shorten "console.log" to just "log"
-```javascript
-var log = funcifyr.funcify(console, 'log');
-
-log("Wow I'm saving keystrokes."); //=> Wow I'm saving keystrokes.
-```
-
-
 ## funcifyr.groupBy(key)
 
-Groups together related property values from objects.
+Groups together related property values from an array of objects.
 ```javascript
 var arr = [
   { name: 'Osiris', age: 41, location: 'New York' },
@@ -306,7 +282,7 @@ var data = [
   { name: 'Agnes Agatha', hasGold: true }
 ];
 
-var isGoldMember = member => member.hasGold;
+var isGoldMember = (member) => member.hasGold;
 var isNotGoldMember = funcifyr.negate(isGoldMember);
 
 var isNotEligible = data.filter(isNotGoldMember);
@@ -334,8 +310,8 @@ var data = [
   { name: 'Agnes Agatha', monthsSubscribed: 12, hasGold: true }
 ];
 
-var isGoldMember = member => member.hasGold;
-var isYearSubscriber = member => member.monthsSubscribed === 12;
+var isGoldMember = (member) => member.hasGold;
+var isYearSubscriber = (member) => member.monthsSubscribed === 12;
 
 var isEligible = data.filter( funcifyr.or(isGoldMember, isYearSubscriber) );
 
@@ -347,16 +323,16 @@ console.table(isEligible);
 ```
 
 
-## funcifyr.partialify(fn, a)
+## funcifyr.partial(fn, a)
 
 Creates a copy of a function with a preset first parameter.
 ```javascript
 function greeter(greet, greeting) {
   console.log(`${greet}, ${greeting}`);
 }
-var englishGreet = funcifyr.partialify(greeter, 'Hi');
-var spanishGreet = funcifyr.partialify(greeter, 'Hola');
-var japaneseGreet = funcifyr.partialify(greeter, 'Konnichiwa');
+var englishGreet = funcifyr.partial(greeter, 'Hi');
+var spanishGreet = funcifyr.partial(greeter, 'Hola');
+var japaneseGreet = funcifyr.partial(greeter, 'Konnichiwa');
 
 englishGreet('how are you?'); //=> Hi, how are you?
 spanishGreet('how are you?'); //=> Hola, how are you?
@@ -376,16 +352,12 @@ var data = [
   { id: 5, name: 'Brave Dave', age: 40 }
 ];
 
-var getNames = data => {
-  return data.map(v => {
-    return v.name;
-  });
+var getNames = (data) => {
+  return data.map(v => v.name);
 };
 
-var getInitials = names => {
-  return names.map(name => {
-    return name.split(' ')[0][0] + name.split(' ')[1][0];
-  });
+var getInitials = (names) => {
+  return names.map(name => name.split(' ')[0][0] + name.split(' ')[1][0]);
 }
 
 var pluckInitials = funcifyr.pipe(getNames, getInitials);
@@ -447,16 +419,9 @@ funcifyr.repeat('repeat', 8); //=> "repeatrepeatrepeatrepeatrepeatrepeatrepeatre
 
 Randomly shuffles items in an array.
 ```javascript
+// Results may vary
 funcifyr.shuffle([1,2,3,4,5,6,7,8,9]); //=> [5, 9, 8, 2, 1, 7, 6, 3, 4]
 funcifyr.shuffle([1,2,3,4,5,6,7,8,9]); //=> [3, 5, 4, 6, 2, 9, 1, 8, 7]
-```
-
-
-## funcifyr.style(styleObject)
-
-Creates functions from style objects to place inline styles on DOM elements.
-```javascript
-todo
 ```
 
 
@@ -512,7 +477,7 @@ console.log(uniqified); //=> ["a", 1, "b", 2, "c", 3]
 ```
 
 
-## funcifyr.whenify(fnPredicate, fnWhenTrue)
+## funcifyr.when(fnPredicate, fnWhenTrue)
 
 Runs a function when the result of a predicate function returns true.
 ```javascript
