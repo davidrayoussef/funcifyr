@@ -114,19 +114,18 @@ describe('curry', () => {
 
 describe('fill', () => {
 
-  let obj = { name: null, email: null, address: null, friends: [] };
-  let userDataTemplate = F.fill(obj, 10);
+  const row = F.fill(0, 5);
+  const matrix = F.fill(row, 5);
 
   it('Should return an array', () => {
 
-    expect( Array.isArray(userDataTemplate) ).to.be.true;
+    expect( Array.isArray(matrix) ).to.be.true;
 
   });
 
-  it('Should return an array with a length of 10', () => {
-
-    const actual = userDataTemplate.length;
-    const expected = 10;
+  it('Should return an array with a length of 5', () => {
+    const actual = matrix.length;
+    const expected = 5;
 
     assert.equal(actual, expected);
 
@@ -136,8 +135,8 @@ describe('fill', () => {
 
 describe('flatten', () => {
 
-  let arr = [1, 2, ['3'], true, [[false, 'a'], 'b'], 'c'];
-  let flattenedArray = F.flatten(arr);
+  const arr = [1, 2, ['3'], true, [[false, 'a'], 'b'], 'c'];
+  const flattenedArray = F.flatten(arr);
 
   it('Should return an array', () => {
 
@@ -157,7 +156,7 @@ describe('flatten', () => {
 
 describe('groupBy', () => {
 
-  let data = [
+  const data = [
     { name: 'Osiris', location: 'New York' },
     { name: 'Ishtar', location: 'New York' },
     { name: 'Zeus', location: 'California' },
@@ -237,12 +236,43 @@ describe('negate', () => {
 
 });
 
+describe('range', () => {
+
+  it('Should return a range of numbers from 1 to 10 if passed just one argument (10)', () => {
+
+    const actual = JSON.stringify( F.range(10) );
+    const expected = "[1,2,3,4,5,6,7,8,9,10]";
+
+    assert.equal(actual, expected);
+
+  });
+
+  it('Should return a range of numbers from 90 to 95 if passed two arguments (90, 95)', () => {
+
+    const actual = JSON.stringify( F.range(90, 95) );
+    const expected = "[90,91,92,93,94,95]";
+
+    assert.equal(actual, expected);
+
+  });
+
+  it('Should return a range of numbers from 0 to 20 in steps of 5 if passed three arguments (0, 20, 5)', () => {
+
+    const actual = JSON.stringify( F.range(0, 20, 5) );
+    const expected = "[0,5,10,15,20]";
+
+    assert.equal(actual, expected);
+
+  });
+
+});
+
 describe('shuffle', () => {
 
   it('Should pass randomness test', () => {
 
     const oneTo100 = Array.from({length: 100}, (_,i) => i + 1);
-    let results = [];
+    const results = [];
 
     for (let i = 0; i < 100; i++) {
       const shuffled = F.shuffle( oneTo100.slice() );
@@ -259,7 +289,7 @@ describe('shuffle', () => {
 
 describe('tally', () => {
 
-  let data = [
+  const data = [
     { name: 'Dave', position: 'Front-End Developer' },
     { name: 'Jen', position: 'Front-End Developer' },
     { name: 'Kim', position: 'Front-End Developer' },
@@ -267,7 +297,7 @@ describe('tally', () => {
     { name: 'Sue', position: 'Dev Ops' }
   ];
   const tallyByPosition = F.tally('position');
-  let positionTally = tallyByPosition(data)
+  const positionTally = tallyByPosition(data)
 
   it('Should return an object as result', () => {
 
