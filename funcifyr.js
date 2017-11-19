@@ -16,7 +16,7 @@
     return {
 
       /**
-       * Runs two predicate functions on an argument and returns true if both are true
+       * Runs two predicate functions on an argument and returns true if both are true.
        *
        * and :: (fn, fn) → (a) → bool
        *
@@ -32,7 +32,7 @@
       },
 
       /**
-       * Converts an Array-like object, HTMLCollection or NodeList (that's not mappable) into an Array
+       * Converts an Array-like object, HTMLCollection or NodeList (that's not mappable) into an Array.
        *
        * arrayify :: (obj) → arr
        *
@@ -44,7 +44,7 @@
       },
 
       /**
-       * Returns an array of arrays or strings in chunks of n
+       * Returns an array of arrays or strings in chunks of n.
        *
        * chunkBy :: (n) → (a) → arr
        *
@@ -68,7 +68,7 @@
       },
 
       /**
-       * Creates a function from two functions that runs fn1 on the results of fn2
+       * Creates a function from two functions that runs fn1 on the results of fn2.
        *
        * compose :: (fn, fn) → (a) → r
        *
@@ -84,7 +84,7 @@
       },
 
       /**
-       * Takes a variadic function and returns unary functions until all parameters are used
+       * Takes a variadic function and returns unary functions until all parameters are used.
        *
        * curry :: (fn → (a,b,c,d)) → (a) → (b) → (c) → (d) → r
        *
@@ -111,7 +111,7 @@
       },
 
       /**
-       * Returns an array filled with a value repeated a number of times
+       * Returns an array filled with a value repeated a number of times.
        *
        * fill :: (n, n) → arr
        *
@@ -128,7 +128,7 @@
       },
 
       /**
-       * Takes any number of arguments and/or multidimensional arrays and returns a new array with results flattened
+       * Takes any number of arguments and/or multidimensional arrays and returns a new array with results flattened.
        *
        * flatten :: (a, b, [[c], [d, e]]) → [a, b, c, d, e]
        *
@@ -142,7 +142,7 @@
       },
 
       /**
-       * Modifies a method to return its context; useful for method chaining
+       * Modifies a method to return its context; useful for method chaining.
        *
        * fluentify :: (fn) → (a) → context || r
        *
@@ -159,7 +159,7 @@
       },
 
       /**
-       * Groups together related prop values from an array of objects
+       * Groups together related prop values from an array of objects.
        *
        * groupBy :: (a) → (arr) → obj
        *
@@ -178,7 +178,7 @@
       },
 
       /**
-       * Creates a type checker
+       * Creates a type checker.
        *
        * is :: (a) → (b) → bool
        *
@@ -194,7 +194,7 @@
       },
 
       /**
-       * Creates a predicate function to test for numbers less than x
+       * Creates a predicate function to test for numbers less than x.
        *
        * lessThan :: (a) → (b) → bool
        *
@@ -210,7 +210,7 @@
       },
 
       /**
-       * Maps over an unmappable Array-like collection and runs a callback
+       * Maps over a collection and runs a callback.
        *
        * map :: (obj, fn) → arr
        *
@@ -225,7 +225,7 @@
       },
 
       /**
-       * Creates predicate function to test for numbers greater than x
+       * Creates predicate function to test for numbers greater than x.
        *
        * moreThan :: (a) → (b) → bool
        *
@@ -241,7 +241,7 @@
       },
 
       /**
-       * Takes a predicate function and returns a function that's the "opposite" of the predicate
+       * Takes a predicate function and returns a function that's the "opposite" of the predicate.
        *
        * negate :: (fn) → (a) → bool
        *
@@ -257,7 +257,7 @@
       },
 
       /**
-       * Runs two predicate functions on an argument and returns true if either are true
+       * Runs two predicate functions on an argument and returns true if either are true.
        *
        * or :: (fn, fn) → (a) → bool
        *
@@ -273,7 +273,7 @@
       },
 
       /**
-       * Creates a copy of a function with a preset first parameter
+       * Creates a copy of a function with a preset first parameter.
        *
        * partial :: (fn, a) → (b) → r
        *
@@ -289,7 +289,7 @@
       },
 
       /**
-       * Runs several functions, using the result of one function as the argument for the next
+       * Runs several functions, using the result of one function as the argument for the next.
        *
        * pipe :: (fns) → (a) → r
        *
@@ -310,7 +310,7 @@
       },
 
       /**
-       * Plucks values from objects in an array
+       * Plucks values from objects in an array.
        *
        * pluck :: (a) → (arr) → arr
        *
@@ -328,7 +328,7 @@
       },
 
       /**
-       * Returns a random integer between min and max
+       * Returns a random integer between min and max.
        *
        * random :: (n, n) → r
        *
@@ -340,7 +340,25 @@
       },
 
       /**
-       * Repeats a string a number of times
+       * Returns an array of numbers ranging from start to stop, incremented by step.
+       *
+       * range :: (n, n, n) → arr
+       *
+       * @param (start, stop, step) - A start value, a stop value, and a step value to increment by
+       * @returns An array of the range of numbers
+      **/
+      range: function(start, stop, step) {
+        if (arguments.length === 1) return funcifyr.range(1, start, 1);
+        if (arguments.length === 2) return funcifyr.range(start, stop, 1);
+        var result = [];
+        for (var i = start; i <= stop; i += step) {
+          result.push(i);
+        }
+        return result;
+      },
+
+      /**
+       * Repeats a string a number of times.
        *
        * repeat :: (a, n) → r
        *
@@ -355,7 +373,7 @@
       },
 
       /**
-       * Randomly shuffles items in an array
+       * Randomly shuffles items in an array.
        *
        * shuffle :: (arr) → arr
        *
@@ -373,7 +391,7 @@
       },
 
       /**
-       * Returns an object with the number of occurrences of a property value found in an array of objects
+       * Returns an object with the number of occurrences of a property value found in an array of objects.
        *
        * tally :: (a) → (arr) → obj
        *
@@ -392,7 +410,7 @@
       },
 
       /**
-       * Creates sequence of chainable actions
+       * Creates sequence of chainable actions.
        *
        * thenify :: (a) → obj
        *
@@ -413,7 +431,7 @@
       },
 
       /**
-       * Takes an array with duplicates and returns a new one with all dupes removed
+       * Takes an array with duplicates and returns a new one with all dupes removed.
        *
        * unique :: (arr) → arr
        *
@@ -428,7 +446,7 @@
       },
 
       /**
-       * Runs a function when the result of a function predicate is true
+       * Runs a function when the result of a function predicate is true.
        *
        * when :: (fn, fn) → (a) → r
        *
