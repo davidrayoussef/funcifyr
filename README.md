@@ -22,6 +22,7 @@ F.partial() // creates copy of a function with preset first param
 F.pipe() // runs a function on passed-in results of another
 F.pluck() // plucks props from objects in array
 F.random() // returns random integer
+F.range() // returns a range of numbers
 F.repeat() // repeats a string a number of times
 F.shuffle() // randomly shuffles items in an array
 F.tally() // returns tally count of a prop value from objects in array
@@ -38,9 +39,9 @@ Runs two predicate functions on an argument and returns true if both are true.
 
 e.g. You want to check if something is a string AND has more than 6 characters...
 ```javascript
-var isString = (str) => typeof str === 'string';
-var isLongerThanSix = (str) => str.length > 6;
-var isValid = funcifyr.and(isString, isLongerThanSix);
+const isString = (str) => typeof str === 'string';
+const isLongerThanSix = (str) => str.length > 6;
+const isValid = funcifyr.and(isString, isLongerThanSix);
 
 isValid(55); //=> false
 isValid('funci'); //=> false
@@ -50,22 +51,21 @@ isValid('funcify all the things'); //=> true
 
 ## funcifyr.arrayify(collection)
 
-The methods querySelectorAll(), getElementsByClassName() and getElementsByTagName() return HTMLCollections instead of arrays.
+In some older browsers, the methods querySelectorAll(), getElementsByClassName() and getElementsByTagName() return HTMLCollections instead of arrays.
 ```javascript
 <div class="old-class"></div>
 <div class="old-class"></div>
 <div class="old-class"></div>
 
-var elementCollection = document.querySelectorAll('div');
-elementCollection.map(el => el.className += ' new-class');
+const elementCollection = document.querySelectorAll('div');
+elementCollection.forEach(el => el.className += ' new-class');
 //=> Uncaught TypeError: elementCollection.forEach is not a function
 ```
 
-Use arrayify to turn them into arrays that can then be iterated over with
-.forEach, .map, .filter, etc.
+Use arrayify to turn them into arrays that can then be iterated over with .forEach, .map, .filter, etc.
 ```javascript
-var elementCollection = document.querySelectorAll('div');
-var iterableCollection = funcifyr.arrayify(elementCollection);
+const elementCollection = document.querySelectorAll('div');
+const iterableCollection = funcifyr.arrayify(elementCollection);
 iterableCollection.map(el => el.className += ' new-class');
 
 <div class="old-class new-class"></div>
@@ -78,21 +78,21 @@ iterableCollection.map(el => el.className += ' new-class');
 
 Creates a function that returns an array of arrays or strings in chunks of n.
 ```javascript
-var chunkBy2 = funcifyr.chunkBy(2);
+const chunkBy2 = funcifyr.chunkBy(2);
 console.log( chunkBy2([1,2,3,4,5,6,7,8]) ); //=> [[1,2],[3,4],[5,6],[7,8]]
 
-var chunkBy3 = funcifyr.chunkBy(3);
+const chunkBy3 = funcifyr.chunkBy(3);
 console.log( chunkBy3('Hello world') ); //=> ["Hel", "lo ", "wor", "ld"]
 ```
 
 
 ## funcifyr.compose(fn1, fn2)
 
-Creates a composed function by applying one function to the output of another function.
+Creates a composed function that returns the result of running a function on the output of another function.
 ```javascript
-var getFirstLastName = (person) => person.split(' ');
-var reverseOrder = (names) => `${names[1]}, ${names[0]}`;
-var lastNameFirst = funcifyr.compose(reverseOrder, getFirstLastName);
+const getFirstLastName = (person) => person.split(' ');
+const reverseOrder = (names) => `${names[1]}, ${names[0]}`;
+const lastNameFirst = funcifyr.compose(reverseOrder, getFirstLastName);
 
 console.log( lastNameFirst('Joe Schmoe') ); //=> Schmoe, Joe
 ```
@@ -108,19 +108,19 @@ todo example
 
 ## funcifyr.fill(value, times)
 
-Prefills an array with a value or an object a number of times. Useful for quickly adding filler content.
+Returns an array filled with a value repeated a number of times.
 ```javascript
-var obj = { name: null, email: null, address: null, friends: [] };
-var userDataTemplate = funcifyr.fill(obj, 5);
+const row = funcifyr.fill(0, 5);
+const matrix = funcifyr.fill(row, 5);
 
-console.log(userDataTemplate);
+console.log(matrix);
 /*
 [
-  {name: null, email: null, address: null, friends: []},
-  {name: null, email: null, address: null, friends: []},
-  {name: null, email: null, address: null, friends: []},
-  {name: null, email: null, address: null, friends: []},
-  {name: null, email: null, address: null, friends: []}
+  [0,0,0,0,0],
+  [0,0,0,0,0],
+  [0,0,0,0,0],
+  [0,0,0,0,0],
+  [0,0,0,0,0]
 ]
 */
 ```
@@ -130,7 +130,7 @@ console.log(userDataTemplate);
 
 Takes any number of arguments and multidimensional arrays and returns a new array with the results flattened.
 ```javascript
-var flattened = funcifyr.flatten('z', [[['y', 4], 3], true], [[2], [[[[[1]]]]], ['x']]);
+const flattened = funcifyr.flatten('z', [[['y', 4], 3], true], [[2], [[[[[1]]]]], ['x']]);
 
 console.log(flattened); //=> ["z", "y", 4, 3, true, 2, 1, "x"]
 ```
@@ -141,22 +141,19 @@ console.log(flattened); //=> ["z", "y", 4, 3, true, 2, 1, "x"]
 Modifies a method to return its 'this' context. Used for method chaining.
 
 ```javascript
-var Customer = function() {};
+const Customer = function() {};
 
 Customer.prototype.setName = funcifyr.fluentify(function(name) { this.name = name; });
 
 Customer.prototype.setAge = funcifyr.fluentify(function(age) { this.age = age; });
 
-Customer.prototype.setLocation = funcifyr.fluentify(function(city, state) {
-  this.city = city;
-  this.state = state;
-});
+Customer.prototype.setLocation = funcifyr.fluentify(function(city, state) { Object.assign(this, { city, state }) });
 
 Customer.prototype.save = function() {
   console.log( `Saving new account for ${this.age} year old ${this.name} from ${this.city}, ${this.state}...` );
 };
 
-var newCustomer = new Customer();
+const newCustomer = new Customer();
 
 newCustomer.setName('Alice').setLocation('Wonderland', 'NY').setAge(25).save();
 //=> Saving new account for 25 year old Alice from Wonderland, NY...
@@ -167,7 +164,7 @@ newCustomer.setName('Alice').setLocation('Wonderland', 'NY').setAge(25).save();
 
 Groups together related property values from an array of objects.
 ```javascript
-var arr = [
+const arr = [
   { name: 'Osiris', age: 41, location: 'New York' },
   { name: 'Ishtar', age: 33, location: 'New York' },
   { name: 'Zeus', age: 25, location: 'California' },
@@ -175,8 +172,8 @@ var arr = [
   { name: 'Maat', age: 21, location: 'California' },
 ];
 
-var groupByLocation = funcifyr.groupBy('location');
-var dataByLocation = groupByLocation(arr);
+const groupByLocation = funcifyr.groupBy('location');
+const dataByLocation = groupByLocation(arr);
 
 JSON.stringify(dataByLocation);
 /*
@@ -200,9 +197,9 @@ JSON.stringify(dataByLocation);
 Creates a function that checks whether a value is a certain type.
 
 ```javascript
-var isBoolean = funcifyr.is('boolean');
-var isNumber = funcifyr.is('number');
-var isString = funcifyr.is('string');
+const isBoolean = funcifyr.is('boolean');
+const isNumber = funcifyr.is('number');
+const isString = funcifyr.is('string');
 
 isBoolean(0); //=> false
 isBoolean(false); //=> true
@@ -215,13 +212,13 @@ isString('str'); //=> true
 
 ## funcifyr.lessThan(x)
 
-Creates a predicate function to test for values LESS than x.
+Creates a predicate function to test for values less than x.
 
 ```javascript
-var isLessThan65 = funcifyr.lessThan(65);
-var isMoreThan21 = funcifyr.moreThan(21);
+const isLessThan65 = funcifyr.lessThan(65);
+const isMoreThan21 = funcifyr.moreThan(21);
 
-var data = [  
+const data = [  
   { name: 'Lisa the Lawyer', age: 40 },
   { name: 'Jebediah the Grey', age: 101 },
   { name: 'Dan the Doctor', age: 50 },
@@ -231,7 +228,7 @@ var data = [
   { name: 'Dennis the Menace', age: 15 }
 ];
 
-var targetClients = data.filter(person => {
+const targetClients = data.filter(person => {
   return isMoreThan21(person.age) && isLessThan65(person.age);
 });
 
@@ -245,12 +242,12 @@ console.table(targetClients);
 
 ## funcifyr.moreThan(x)
 
-Creates a predicate function to test for values MORE than x.
+Creates a predicate function to test for values more than x.
 
 ```javascript
-var isMoreThan80 = funcifyr.moreThan(80);
+const isMoreThan80 = funcifyr.moreThan(80);
 
-var data = [  
+const data = [  
   { name: 'Lisa the Lawyer', age: 40 },
   { name: 'Jebediah the Grey', age: 101 },
   { name: 'Dan the Doctor', age: 50 },
@@ -260,7 +257,7 @@ var data = [
   { name: 'Dennis the Menace', age: 15 }
 ];
 
-var getsSeniorDiscount = data
+const getsSeniorDiscount = data
   .filter(person => isMoreThan80(person.age))
   .map(person => person.name);
 
@@ -274,24 +271,24 @@ Creates a negate function that returns true if the result is false.
 
 e.g. You want to grab customers that are NOT Gold members and list them as not eligible.
 ```javascript
-var data = [
+const data = [
   { name: 'Marty Mcfly', hasGold: true },
   { name: 'Jake Jumanji', hasGold: false },  
-  { name: 'Frederick Finkelstein', hasGold: false },  
-  { name: 'Gertrude Gretchen', hasGold: false },  
+  { name: 'Frederick Funkhouser', hasGold: false },  
+  { name: 'Gertrude Gretel', hasGold: false },  
   { name: 'Agnes Agatha', hasGold: true }
 ];
 
-var isGoldMember = (member) => member.hasGold;
-var isNotGoldMember = funcifyr.negate(isGoldMember);
+const isGoldMember = (member) => member.hasGold;
+const isNotGoldMember = funcifyr.negate(isGoldMember);
 
-var isNotEligible = data.filter(isNotGoldMember);
+const isNotEligible = data.filter(isNotGoldMember);
 
 console.table(isNotEligible);
 
 // (index)      name                       hasGold
 // 0            "Jake Jumanji"             false
-// 1            "Frederick Finkelstein"    false
+// 1            "Frederick Funkhouser"    false
 // 2            "Gertrude Gretel"          false
 ```
 
@@ -302,18 +299,18 @@ Runs two predicate functions on an argument and returns true if one OR the other
 
 e.g. You want to grab customers that either have a gold membership, OR a 12-month subscription.
 ```javascript
-var data = [
+const data = [
   { name: 'Marty Mcfly', monthsSubscribed: 1, hasGold: true },
   { name: 'Jake Jumanji', monthsSubscribed: 12, hasGold: false },  
-  { name: 'Frederick Finkelstein', monthsSubscribed: 6, hasGold: false },  
-  { name: 'Gertrude Gretchen', monthsSubscribed: 1, hasGold: false },  
+  { name: 'Frederick Funkhouser', monthsSubscribed: 6, hasGold: false },  
+  { name: 'Gertrude Gretel', monthsSubscribed: 1, hasGold: false },  
   { name: 'Agnes Agatha', monthsSubscribed: 12, hasGold: true }
 ];
 
-var isGoldMember = (member) => member.hasGold;
-var isYearSubscriber = (member) => member.monthsSubscribed === 12;
+const isGoldMember = (member) => member.hasGold;
+const isYearSubscriber = (member) => member.monthsSubscribed === 12;
 
-var isEligible = data.filter( funcifyr.or(isGoldMember, isYearSubscriber) );
+const isEligible = data.filter( funcifyr.or(isGoldMember, isYearSubscriber) );
 
 console.table(isEligible);
 // (index)      name                     monthsSubscribed    hasGold
@@ -330,9 +327,9 @@ Creates a copy of a function with a preset first parameter.
 function greeter(greet, greeting) {
   console.log(`${greet}, ${greeting}`);
 }
-var englishGreet = funcifyr.partial(greeter, 'Hi');
-var spanishGreet = funcifyr.partial(greeter, 'Hola');
-var japaneseGreet = funcifyr.partial(greeter, 'Konnichiwa');
+const englishGreet = funcifyr.partial(greeter, 'Hi');
+const spanishGreet = funcifyr.partial(greeter, 'Hola');
+const japaneseGreet = funcifyr.partial(greeter, 'Konnichiwa');
 
 englishGreet('how are you?'); //=> Hi, how are you?
 spanishGreet('how are you?'); //=> Hola, how are you?
@@ -344,7 +341,7 @@ japaneseGreet('how are you?'); //=> Konnichiwa, how are you?
 
 Runs a function on the passed-in results of another function. Same as compose but function order is reversed.
 ```javascript
-var data = [
+const data = [
   { id: 1, name: 'Starvin Marvin', age: 39 },
   { id: 2, name: 'Anna Banana', age: 25 },  
   { id: 3, name: 'Mean Gene', age: 33 },  
@@ -352,15 +349,13 @@ var data = [
   { id: 5, name: 'Brave Dave', age: 40 }
 ];
 
-var getNames = (data) => {
-  return data.map(v => v.name);
-};
+const getNames = (data) => data.map(v => v.name);
 
-var getInitials = (names) => {
+const getInitials = (names) => {
   return names.map(name => name.split(' ')[0][0] + name.split(' ')[1][0]);
 }
 
-var pluckInitials = funcifyr.pipe(getNames, getInitials);
+const pluckInitials = funcifyr.pipe(getNames, getInitials);
 
 console.log( pluckInitials(data) ); //=> ["SM", "AB", "MG", "HM", "BD"]
 ```
@@ -373,7 +368,7 @@ Plucks property values from data objects.
 e.g. You'd like to create functions to pull the names and emails from an array of objects to be passed in later...
 
 ```javascript
-var data = [
+const data = [
   {
     id: 1,
     name: 'Gina',
@@ -396,14 +391,23 @@ var data = [
   }
 ];
 
-var getNames = funcifyr.pluck('name');
-var getEmails = funcifyr.pluck('email');
+const getNames = funcifyr.pluck('name');
+const getEmails = funcifyr.pluck('email');
 
-var namesFromData = getNames(data);
-var emailsFromData = getEmails(data);
+const namesFromData = getNames(data);
+const emailsFromData = getEmails(data);
 
 console.log(namesFromData); //=> ["Gina", "Lucy", "Al", "Tony"]
 console.log(emailsFromData); //=> ["gina@gmail.com", "lucy@gmail.com", "al@gmail.com", "tony@gmail.com"]
+```
+
+
+## funcifyr.range(start, end, step)
+
+Returns an array of numbers ranging from start to stop.
+```javascript
+funcifyr.range(10); //=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+funcifyr.range(0, 30, 5); //=> [0, 5, 10, 15, 20, 25, 30]
 ```
 
 
@@ -411,7 +415,7 @@ console.log(emailsFromData); //=> ["gina@gmail.com", "lucy@gmail.com", "al@gmail
 
 Repeats a string a number of times.
 ```javascript
-funcifyr.repeat('repeat', 8); //=> "repeatrepeatrepeatrepeatrepeatrepeatrepeatrepeat"
+funcifyr.repeat('hello', 8); //=> "hellohellohellohellohellohellohellohello"
 ```
 
 
@@ -427,9 +431,9 @@ funcifyr.shuffle([1,2,3,4,5,6,7,8,9]); //=> [3, 5, 4, 6, 2, 9, 1, 8, 7]
 
 ## funcifyr.tally(prop)
 
-Returns a tally count object of a specific property value from data objects in an array.
+Returns a tally count object of a specific property value from objects in an array.
 ```javascript
-var data = [
+const data = [
   { name: 'Dave', position: 'Front-End Developer' },
   { name: 'Jen', position: 'Front-End Developer' },
   { name: 'Joe', position: 'Network Engineer' },
@@ -441,8 +445,8 @@ var data = [
   { name: 'Jon', position: 'Back-End Developer' }
 ];
 
-var tallyByPosition = F.tally('position');
-var positionTally = tallyByPosition(data);
+const tallyByPosition = F.tally('position');
+const positionTally = tallyByPosition(data);
 JSON.stringify(positionTally); //=>
 /*
 {
@@ -469,9 +473,9 @@ todo
 
 Takes an array which might have duplicates and returns a new array with all dupes removed.
 ```javascript
-var arrWithDupes = ['a', 1, 1, 'a', 'a', 'b', 2, 'b', 2, 2, 'b', 'c', 3, 3];
+const arrWithDupes = ['a', 1, 1, 'a', 'a', 'b', 2, 'b', 2, 2, 'b', 'c', 3, 3];
 
-var uniqified = funcifyr.unique(arrWithDupes);
+const uniqified = funcifyr.unique(arrWithDupes);
 
 console.log(uniqified); //=> ["a", 1, "b", 2, "c", 3]
 ```
