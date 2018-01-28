@@ -12,7 +12,10 @@
     "url": "git+https://github.com/davidrayoussef/funcifyr.git"
   },
   "keywords": [
-    "funcifyr"
+    "funcifyr",
+    "functional",
+    "functions",
+    "library"
   ],
   "author": "David Ra Youssef <davidradeveloper@gmail.com> (http://davidra.co/)",
   "license": "MIT",

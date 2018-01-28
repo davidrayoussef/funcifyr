@@ -1,34 +1,56 @@
 # funcifyr.js
 funcifyr.js is a functional library used for function creation, combination, composition and decoration.
 
+# Getting Started
+
+Install in npm...
+```shell
+$ npm install --save-dev funcifyr
+```
+
+To use the library...
+```javascript
+const F = require('funcifyr');
+```
+
+To import just one method...
+```javascript
+const { shuffle } = require('funcifyr');
+```
+
+To import several methods...
+```javascript
+const { shuffle, compose, flatten } = require('funcifyr');
+```
+
 # tldr
 ```javascript
 F.and() // runs 2 functions on arg, returns true if both true
-F.arrayify() // converts NodeList into an Array
+F.arrayify() // converts a NodeList into an Array
 F.chunkBy() // returns an array of arrays or strings in chunks of n
 F.compose() // creates new function from two functions
-F.curry() // takes a function with multiple params, returns a function with one param
+F.curry() // turns a multi-param function into a series of one-param functions
 F.fill() // returns an array prefilled with a value
 F.flatten() // flattens multidimensional arrays
 F.fluentify() // used for method chaining
 F.groupBy() // groups together related prop values from objects
 F.is() // creates a type checker
 F.lessThan() // tests for values less than x
-F.map() // runs a callback on an unmappable collection
-F.moreThan() // tests for values more than x
+F.map() // runs a callback on a collection
+F.moreThan() // tests for values greater than x
 F.negate() // creates a function that returns the opposite of a predicate
-F.or() // runs 2 functions on arg, returns true if either true
-F.partial() // creates copy of a function with preset first param
-F.pipe() // runs a function on passed-in results of another
-F.pluck() // plucks props from objects in array
-F.random() // returns random integer
+F.or() // runs 2 functions on an arg, returns true if either are true
+F.partial() // creates copy of a function with a preset first param
+F.pipe() // runs a function on the passed-in results of another
+F.pluck() // plucks props from objects in an array
+F.random() // returns a random integer
 F.range() // returns a range of numbers
 F.repeat() // repeats a string a number of times
 F.shuffle() // randomly shuffles items in an array
-F.tally() // returns tally count of a prop value from objects in array
-F.thenify() // creates sequence of chainable actions
+F.tally() // returns tally count of a prop value from objects in an array
+F.thenify() // creates a sequence of chainable actions
 F.unique() // removes duplicates
-F.when() // runs function when result of a function predicate is true
+F.when() // runs a function when the result of a function predicate is true
 
 ```
 
