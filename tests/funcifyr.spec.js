@@ -223,6 +223,43 @@ describe('is', () => {
 
 });
 
+describe('map', () => {
+
+  it('Should run a function on the items of an array and return a new array with the correct results', () => {
+
+    const arr = [ 1, 2, 3, 4 ];
+    const double = (n) => n * 2;
+
+    const actual = JSON.stringify( F.map(arr, double) );
+    const expected = "[2,4,6,8]";
+
+    assert.equal(actual, expected);
+
+  });
+
+  it('Should run a function on the values of an object and return a new object with the correct results', () => {
+
+    const obj = { a: 1, b: 2, c: 3, d: 4 };
+    const addOne = (n) => n + 1;
+
+    const actual = JSON.stringify( F.map(obj, addOne) );
+    const expected = '{"a":2,"b":3,"c":4,"d":5}';
+
+    assert.equal(actual, expected);
+
+  });
+
+  it('should throw an error if value passed is not an array or an object', () => {
+
+    const triple = (n) => n * 3;
+    const str = 'string';
+
+    expect( () => F.map(str, triple) ).to.throw(TypeError);
+
+  });
+
+});
+
 describe('negate', () => {
 
   it('Should return a predicate function that is the opposite of original function', () => {
