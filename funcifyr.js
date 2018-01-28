@@ -210,18 +210,35 @@
       },
 
       /**
-       * Maps over a collection and runs a callback.
+       * Maps over a collection and runs a callback on each item.
        *
        * map :: (obj, fn) → arr
        *
-       * @param (collection, callback) - A collection to iterate over, and a callback function to run
-       * @returns array
-       * TODO Rewrite to handle objects
+       * @param (collection, fn) - An array or object to iterate over, and a callback function to run
+       * @returns array or object
       **/
-      map: function(collection, callback) {
-        return Array.apply(null, collection).map(function(v) {
-          return callback ? callback(v) : v;
-        });
+      map: function(collection, fn) {
+        if ( Array.isArray(collection) ) {
+          var result = [];
+
+          for (var i = 0; i < collection.length; i++) {
+            result[i] = fn(collection[i], i, collection);
+          }
+
+          return result;
+        }
+        else if ( Object.prototype.toString.call(collection) === '[object Object]' ) {
+          var result = {};
+
+          for (var key in collection) {
+            if ( collection.hasOwnProperty(key) ) {
+              result[key] = fn(collection[key]);
+            }
+          }
+
+          return result;
+        }
+        else throw new TypeError('Invalid type. First argument must be an array or an object.');
       },
 
       /**
