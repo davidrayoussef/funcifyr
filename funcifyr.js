@@ -189,7 +189,7 @@
       **/
       is: function(type) {
         return function(value) {
-          return type === ({}.toString.call(value).slice(8, -1).toLowerCase());
+          return type === {}.toString.call(value).slice(8, -1).toLowerCase();
         }
       },
 

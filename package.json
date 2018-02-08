@@ -1,6 +1,6 @@
 {
   "name": "funcifyr",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A functional library used for function composition and creation, and data manipulation.",
   "main": "funcifyr.js",
   "scripts": {

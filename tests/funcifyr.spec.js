@@ -84,6 +84,19 @@ describe('compose', () => {
 
   });
 
+  it('should return the correct result of a composed function call', () => {
+
+    const getFirstLastName = (person) => person.split(' ');
+    const reverseOrder = (names) => `${names[1]}, ${names[0]}`;
+    const lastNameFirst = F.compose(reverseOrder, getFirstLastName);
+
+    const actual = lastNameFirst('John Doe');
+    const expected = 'Doe, John';
+
+    assert.equal(actual, expected);
+
+  });
+
 });
 
 describe('curry', () => {
@@ -154,6 +167,39 @@ describe('flatten', () => {
 
 });
 
+describe('fluentify', () => {
+
+  it('should return a function', () => {
+
+    const actual = typeof F.fluentify();
+    const expected = 'function';
+
+    assert.equal(actual, expected);
+
+  });
+
+  it('should return the correct result of chained methods', () => {
+
+    const person = {
+      setName(name) { this.name = name; },
+      setAge(age) { this.age = age; },
+      setLocation(location) { this.location = location; },
+      save() { return `Saving: ${this.name} - ${this.age} years old - from ${this.location}`; }
+    };
+    const fluentPerson = Object.keys(person).reduce((obj,key) => {
+      obj[key] = F.fluentify(person[key]);
+      return obj;
+    }, {});
+
+    const actual = fluentPerson.setName('John').setAge('30').setLocation('NY').save();
+    const expected = 'Saving: John - 30 years old - from NY';
+
+    assert.equal(actual, expected);
+
+  });
+
+});
+
 describe('groupBy', () => {
 
   const data = [
@@ -218,6 +264,44 @@ describe('is', () => {
     const isNumber = F.is('number');
 
     expect( isNumber(89) ).to.be.true;
+
+  });
+
+});
+
+describe('lessThan', () => {
+
+  it('should return a function', () => {
+
+    const actual = typeof F.lessThan();
+    const expected = 'function';
+
+    assert.equal(actual, expected);
+
+  });
+
+  it('should return true when evaluating an initial lesser number compared to a secondary greater number', () => {
+
+    const isLessThan10 = F.lessThan(10);
+
+    expect( isLessThan10(3) ).to.be.true;
+
+  });
+
+  it('should return false when comparing a greater number to a lesser number', () => {
+
+    const isLessThan10 = F.lessThan(10);
+
+    expect( isLessThan10(20) ).to.be.false;
+
+  });
+
+  it('should return true when passed as predicate to array method of array with all lesser values', () => {
+
+    const isLessThan10 = F.lessThan(10);
+    const result = [-1000,0,1,2,3,4,5,6,7,8,9].every(isLessThan10);
+
+    expect( result ).to.be.true;
 
   });
 
