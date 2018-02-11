@@ -373,9 +373,10 @@ const data = [
 
 const getNames = (data) => data.map(v => v.name);
 
-const getInitials = (names) => {
-  return names.map(name => name.split(' ')[0][0] + name.split(' ')[1][0]);
-}
+const getInitials = (names) => names.map(name => {
+  const [ firstName, lastName ] = name.split(' ');
+  return firstName[0] + lastName[0];
+});
 
 const pluckInitials = funcifyr.pipe(getNames, getInitials);
 
@@ -421,6 +422,15 @@ const emailsFromData = getEmails(data);
 
 console.log(namesFromData); //=> ["Gina", "Lucy", "Al", "Tony"]
 console.log(emailsFromData); //=> ["gina@gmail.com", "lucy@gmail.com", "al@gmail.com", "tony@gmail.com"]
+```
+
+
+## funcifyr.random(min, max)
+
+Returns a random number between a minimum number and a maximum number.
+```javascript
+funcifyr.random(1, 10); //=> 6 // results may vary
+funcifyr.random(50, 200); //=> 121 // results may vary
 ```
 
 

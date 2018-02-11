@@ -367,10 +367,13 @@
       range: function(start, stop, step) {
         if (arguments.length === 1) return funcifyr.range(1, start, 1);
         if (arguments.length === 2) return funcifyr.range(start, stop, 1);
+
         var result = [];
+
         for (var i = start; i <= stop; i += step) {
           result.push(i);
         }
+        
         return result;
       },
 
