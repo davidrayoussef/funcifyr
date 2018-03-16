@@ -123,8 +123,55 @@ console.log( lastNameFirst('Joe Schmoe') ); //=> Schmoe, Joe
 ## funcifyr.curry(fn)
 
 Translates a function that takes multiple arguments into a series of functions that each take one argument, and continues until it receives all its arguments.
+
+e.g., You want to turn this render function that takes four arguments, into several intermediary functions that take one argument each. Each intermediary function will have specialized functionality.
 ```javascript
-todo example
+function render(type, props, text, parent) {
+  const element = document.createElement(type);
+  Object.keys(props).forEach(key => element.setAttribute(key, props[key]));
+  element.textContent = text;
+  document.querySelector(parent).appendChild(element);
+}
+
+// Creates a curried version of the render function, ready to take one argument at a time.
+const curriedRender = funcifyr.curry(render);
+
+// Passing the first argument, the type of element, creates a reusable "div maker" function.
+const createDiv = curriedRender('div');
+
+// Use div maker function to pass the second argument, creating two more functions that add a unique attribute.
+const createDivWithPrimaryClass = createDiv({ class: 'primary' });
+const createDivWithSecondaryClass = createDiv({ class: 'secondary' });
+
+// Run the new functions with the third argument, the text of the element.
+const renderPrimaryDiv1 = createDivWithPrimaryClass('This is the 1st Primary div');
+const renderPrimaryDiv2 = createDivWithPrimaryClass('This is the 2nd Primary div');
+const renderSecondaryDiv1 = createDivWithSecondaryClass('This is the 1st Secondary div');
+const renderSecondaryDiv2 = createDivWithSecondaryClass('This is the 2nd Secondary div');
+
+// Optionally call curriedRender function 3 times, passing the first three arguments.
+const renderHeader = curriedRender('header')({ id: 'header' })('This is the Header');
+const renderFooter = curriedRender('footer')({ id: 'footer' })('This is the Footer');
+
+// Pass the final argument, the parent element to append to. Since there are no more arguments, the original render function will execute with all the "remembered" variables in each of the following functions' state.
+renderHeader('body');
+renderPrimaryDiv1('body');
+renderSecondaryDiv1('.primary');
+renderSecondaryDiv2('.primary');
+renderPrimaryDiv2('body');
+renderFooter('body');
+
+/*
+<body>
+  <header id="header">This is the Header</header>
+  <div class="primary">This is the 1st Primary div
+    <div class="secondary">This is the 1st Secondary div</div>
+    <div class="secondary">This is the 2nd Secondary div</div>
+  </div>
+  <div class="primary">This is the 2nd Primary div</div>
+  <footer id="footer">This is the Footer</footer>
+</body>
+*/
 ```
 
 
