@@ -85,7 +85,7 @@ describe('chunkBy', () => {
     const chunkBy2 = F.chunkBy(2);
 
     const actual = JSON.stringify( chunkBy2([1,2,3,4,5,6,7,8]) );
-    const expected = "[[1,2],[3,4],[5,6],[7,8]]";
+    const expected = '[[1,2],[3,4],[5,6],[7,8]]';
 
     assert.equal(actual, expected);
 
@@ -181,6 +181,28 @@ describe('fill', () => {
 
     assert.equal(actual, expected);
 
+  });
+
+});
+
+describe('flatMap', () => {
+
+  it('should return an array', () => {
+
+    expect( Array.isArray( F.flatMap([1, 2, 3], (x) => x ) ) ).to.be.true;
+
+  });
+
+  it('should return the correct result of running a function on nested arrays', () => {
+
+    const double = (n) => n * 2;
+    const flatArray = F.flatMap([1, [2, 3, [4, [5]]]], double);
+
+    const actual = JSON.stringify(flatArray);
+    const expected = '[2,4,6,8,10]';
+
+    assert.equal(actual, expected);
+    
   });
 
 });
@@ -354,7 +376,7 @@ describe('map', () => {
     const double = (n) => n * 2;
 
     const actual = JSON.stringify( F.map(arr, double) );
-    const expected = "[2,4,6,8]";
+    const expected = '[2,4,6,8]';
 
     assert.equal(actual, expected);
 
@@ -457,7 +479,7 @@ describe('or', () => {
   it('should return true if only first predicate function evaluates to true', () => {
 
     const isArray = (obj) => Array.isArray(obj);
-    const isObject = (obj) => Object.prototype.toString.call(obj) === "[object Object]";
+    const isObject = (obj) => Object.prototype.toString.call(obj) === '[object Object]';
     const isArrayOrIsObject = F.or(isArray, isObject);
 
     expect( isArrayOrIsObject([]) ).to.be.true;
@@ -467,7 +489,7 @@ describe('or', () => {
   it('should return true if only second predicate function evaluates to true', () => {
 
     const isArray = (obj) => Array.isArray(obj);
-    const isObject = (obj) => Object.prototype.toString.call(obj) === "[object Object]";
+    const isObject = (obj) => Object.prototype.toString.call(obj) === '[object Object]';
     const isArrayOrIsObject = F.or(isArray, isObject);
 
     expect( isArrayOrIsObject({}) ).to.be.true;
@@ -636,7 +658,7 @@ describe('range', () => {
   it('should return a range of numbers from 1 to 10 if passed just one argument (10)', () => {
 
     const actual = JSON.stringify( F.range(10) );
-    const expected = "[1,2,3,4,5,6,7,8,9,10]";
+    const expected = '[1,2,3,4,5,6,7,8,9,10]';
 
     assert.equal(actual, expected);
 
@@ -645,7 +667,7 @@ describe('range', () => {
   it('should return a range of numbers from 90 to 95 if passed two arguments (90, 95)', () => {
 
     const actual = JSON.stringify( F.range(90, 95) );
-    const expected = "[90,91,92,93,94,95]";
+    const expected = '[90,91,92,93,94,95]';
 
     assert.equal(actual, expected);
 
@@ -654,7 +676,7 @@ describe('range', () => {
   it('should return a range of numbers from 0 to 20 in steps of 5 if passed three arguments (0, 20, 5)', () => {
 
     const actual = JSON.stringify( F.range(0, 20, 5) );
-    const expected = "[0,5,10,15,20]";
+    const expected = '[0,5,10,15,20]';
 
     assert.equal(actual, expected);
 
