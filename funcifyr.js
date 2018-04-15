@@ -128,6 +128,24 @@
       },
 
       /**
+       * Takes a multidimensional array and a callback function, and returns a new, flattened array with the
+       * results of calling the callback function on each value.
+       *
+       * flatMap :: ([a, [b, [c, d]]], fn) → [a, b, c, d]
+       *
+       * @param (x, fn) - A multidimensional array and a callback function
+       * @returns array
+      **/
+      flatMap: function(x, fn) {
+        if (Array.isArray(x) ) {
+          return x.reduce(function(acc, curr) {
+            return acc.concat( funcifyr.flatMap(curr, fn) );
+          }, []);
+        }
+        return fn(x);
+      },
+
+      /**
        * Takes any number of arguments and/or multidimensional arrays and returns a new array with results flattened.
        *
        * flatten :: (a, b, [[c], [d, e]]) → [a, b, c, d, e]
@@ -373,7 +391,7 @@
         for (var i = start; i <= stop; i += step) {
           result.push(i);
         }
-        
+
         return result;
       },
 
