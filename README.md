@@ -3,7 +3,18 @@ funcifyr.js is a functional library used for function creation, combination, com
 
 # Getting Started
 
-Install in npm...
+## To use with standard script tags..
+Download [funcifyr.js](https://raw.githubusercontent.com/davidrayoussef/funcifyr/master/funcifyr.js) and place in the same folder as your index.html file. In index.html...
+```javascript
+<script src="funcifyr.js"></script>
+<script>
+var randomNum = F.random(0, 100);
+var rangeOfNums = F.range(1, 10);
+</script>
+
+```
+
+## To install with npm...
 ```shell
 $ npm install --save-dev funcifyr
 ```
@@ -23,7 +34,7 @@ To import several methods...
 const { shuffle, compose, flatten } = require('funcifyr');
 ```
 
-# tldr
+# Summary list of methods
 ```javascript
 F.and() // runs 2 functions on arg, returns true if both true
 F.arrayify() // converts a NodeList into an Array
@@ -31,6 +42,7 @@ F.chunkBy() // returns an array of arrays or strings in chunks of n
 F.compose() // creates new function from two functions
 F.curry() // turns a multi-param function into a series of one-param functions
 F.fill() // returns an array prefilled with a value
+F.flatMap() // runs a callback on nested arrays
 F.flatten() // flattens multidimensional arrays
 F.fluentify() // used for method chaining
 F.groupBy() // groups together related prop values from objects
@@ -55,7 +67,7 @@ F.when() // runs a function when the result of a function predicate is true
 ```
 
 # Examples
-## funcifyr.and(fn1, fn2)
+## F.and(fn1, fn2)
 
 Runs two predicate functions on an argument and returns true if both are true.
 
@@ -63,7 +75,7 @@ e.g. You want to check if something is a string AND has more than 6 characters..
 ```javascript
 const isString = (str) => typeof str === 'string';
 const isLongerThanSix = (str) => str.length > 6;
-const isValid = funcifyr.and(isString, isLongerThanSix);
+const isValid = F.and(isString, isLongerThanSix);
 
 isValid(55); //=> false
 isValid('funci'); //=> false
@@ -71,7 +83,7 @@ isValid('funcify all the things'); //=> true
 ```
 
 
-## funcifyr.arrayify(collection)
+## F.arrayify(collection)
 
 In some older browsers, the methods querySelectorAll(), getElementsByClassName() and getElementsByTagName() return HTMLCollections instead of arrays.
 ```javascript
@@ -87,7 +99,7 @@ elementCollection.forEach(el => el.className += ' new-class');
 Use arrayify to turn them into arrays that can then be iterated over with .forEach, .map, .filter, etc.
 ```javascript
 const elementCollection = document.querySelectorAll('div');
-const iterableCollection = funcifyr.arrayify(elementCollection);
+const iterableCollection = F.arrayify(elementCollection);
 iterableCollection.map(el => el.className += ' new-class');
 
 <div class="old-class new-class"></div>
@@ -96,31 +108,31 @@ iterableCollection.map(el => el.className += ' new-class');
 ```
 
 
-## funcifyr.chunkBy(n)
+## F.chunkBy(n)
 
 Creates a function that returns an array of arrays or strings in chunks of n.
 ```javascript
-const chunkBy2 = funcifyr.chunkBy(2);
+const chunkBy2 = F.chunkBy(2);
 console.log( chunkBy2([1,2,3,4,5,6,7,8]) ); //=> [[1,2],[3,4],[5,6],[7,8]]
 
-const chunkBy3 = funcifyr.chunkBy(3);
+const chunkBy3 = F.chunkBy(3);
 console.log( chunkBy3('Hello world') ); //=> ["Hel", "lo ", "wor", "ld"]
 ```
 
 
-## funcifyr.compose(fn1, fn2)
+## F.compose(fn1, fn2)
 
 Creates a composed function that returns the result of running a function on the output of another function.
 ```javascript
 const getFirstLastName = (person) => person.split(' ');
 const reverseOrder = (names) => `${names[1]}, ${names[0]}`;
-const lastNameFirst = funcifyr.compose(reverseOrder, getFirstLastName);
+const lastNameFirst = F.compose(reverseOrder, getFirstLastName);
 
 console.log( lastNameFirst('Joe Schmoe') ); //=> Schmoe, Joe
 ```
 
 
-## funcifyr.curry(fn)
+## F.curry(fn)
 
 Translates a function that takes multiple arguments into a series of functions that each take one argument, and continues until it receives all its arguments.
 
@@ -134,7 +146,7 @@ function render(type, props, text, parent) {
 }
 
 // Creates a curried version of the render function, ready to take one argument at a time.
-const curriedRender = funcifyr.curry(render);
+const curriedRender = F.curry(render);
 
 // Passing the first argument, the type of element, creates a reusable "div maker" function.
 const createDiv = curriedRender('div');
@@ -175,12 +187,12 @@ renderFooter('body');
 ```
 
 
-## funcifyr.fill(value, times)
+## F.fill(value, times)
 
 Returns an array filled with a value repeated a number of times.
 ```javascript
-const row = funcifyr.fill(0, 5);
-const matrix = funcifyr.fill(row, 5);
+const row = F.fill(0, 5);
+const matrix = F.fill(row, 5);
 
 console.log(matrix);
 /*
@@ -195,28 +207,60 @@ console.log(matrix);
 ```
 
 
-## funcifyr.flatten()
+## F.flatMap(x, fn)
+
+Runs a callback function on a nested array, and returns a new flat array with the results.
+
+Ex1:
+```javascript
+const double = (n) => n * 2;
+const result = F.flatMap([1, [2, [3, 4, [5, 6, [7]]]]], double);
+
+console.log(result); //=> [2, 4, 6, 8, 10, 12, 14]
+```
+
+Ex2:
+```javascript
+const names = [
+  { name: 'Bill', friends: [ 'Stacy', 'Khan', 'Emily' ] },
+  { name: 'Frank', friends: [ 'Pat', 'Dinesh', 'Tonya' ] },
+  { name: 'Crystal', friends: [ 'Peter', 'Joy', 'Rakim' ] }
+];
+const getFriends = (obj) => obj.friends;
+
+// Result with regular map...
+const result1 = names.map(getFriends);
+console.log(result1); //=> [Array(3), Array(3), Array(3)]
+
+// Result with flatMap...
+const result2 = F.flatMap(names, getFriends);
+console.log(result2); //=> ["Stacy","Khan","Emily","Pat","Dinesh","Tonya","Peter","Joy","Rakim"]
+```
+
+
+
+## F.flatten()
 
 Takes any number of arguments and multidimensional arrays and returns a new array with the results flattened.
 ```javascript
-const flattened = funcifyr.flatten('z', [[['y', 4], 3], true], [[2], [[[[[1]]]]], ['x']]);
+const flattened = F.flatten('z', [[['y', 4], 3], true], [[2], [[[[[1]]]]], ['x']]);
 
 console.log(flattened); //=> ["z", "y", 4, 3, true, 2, 1, "x"]
 ```
 
 
-## funcifyr.fluentify(methodBody)
+## F.fluentify(methodBody)
 
 Modifies a method to return its 'this' context. Used for method chaining.
 
 ```javascript
 const Customer = function() {};
 
-Customer.prototype.setName = funcifyr.fluentify(function(name) { this.name = name; });
+Customer.prototype.setName = F.fluentify(function(name) { this.name = name; });
 
-Customer.prototype.setAge = funcifyr.fluentify(function(age) { this.age = age; });
+Customer.prototype.setAge = F.fluentify(function(age) { this.age = age; });
 
-Customer.prototype.setLocation = funcifyr.fluentify(function(city, state) { Object.assign(this, { city, state }) });
+Customer.prototype.setLocation = F.fluentify(function(city, state) { Object.assign(this, { city, state }) });
 
 Customer.prototype.save = function() {
   console.log( `Saving new account for ${this.age} year old ${this.name} from ${this.city}, ${this.state}...` );
@@ -229,7 +273,7 @@ newCustomer.setName('Alice').setLocation('Wonderland', 'NY').setAge(25).save();
 ```
 
 
-## funcifyr.groupBy(key)
+## F.groupBy(key)
 
 Groups together related property values from an array of objects.
 ```javascript
@@ -241,7 +285,7 @@ const arr = [
   { name: 'Maat', age: 21, location: 'California' },
 ];
 
-const groupByLocation = funcifyr.groupBy('location');
+const groupByLocation = F.groupBy('location');
 const dataByLocation = groupByLocation(arr);
 
 JSON.stringify(dataByLocation);
@@ -261,14 +305,14 @@ JSON.stringify(dataByLocation);
 ```
 
 
-## funcifyr.is(type)
+## F.is(type)
 
 Creates a function that checks whether a value is a certain type.
 
 ```javascript
-const isBoolean = funcifyr.is('boolean');
-const isNumber = funcifyr.is('number');
-const isString = funcifyr.is('string');
+const isBoolean = F.is('boolean');
+const isNumber = F.is('number');
+const isString = F.is('string');
 
 isBoolean(0); //=> false
 isBoolean(false); //=> true
@@ -279,13 +323,13 @@ isString('str'); //=> true
 ```
 
 
-## funcifyr.lessThan(x)
+## F.lessThan(x)
 
 Creates a predicate function to test for values less than x.
 
 ```javascript
-const isLessThan65 = funcifyr.lessThan(65);
-const isMoreThan21 = funcifyr.moreThan(21);
+const isLessThan65 = F.lessThan(65);
+const isMoreThan21 = F.moreThan(21);
 
 const data = [  
   { name: 'Lisa the Lawyer', age: 40 },
@@ -309,12 +353,12 @@ console.table(targetClients);
 ```
 
 
-## funcifyr.moreThan(x)
+## F.moreThan(x)
 
 Creates a predicate function to test for values more than x.
 
 ```javascript
-const isMoreThan80 = funcifyr.moreThan(80);
+const isMoreThan80 = F.moreThan(80);
 
 const data = [  
   { name: 'Lisa the Lawyer', age: 40 },
@@ -334,7 +378,7 @@ console.log(getsSeniorDiscount); //=> ["Jebediah the Grey", "Methusaleh the Wise
 ```
 
 
-## funcifyr.negate(fnPredicate)
+## F.negate(fnPredicate)
 
 Creates a negate function that returns true if the result is false.
 
@@ -349,7 +393,7 @@ const data = [
 ];
 
 const isGoldMember = (member) => member.hasGold;
-const isNotGoldMember = funcifyr.negate(isGoldMember);
+const isNotGoldMember = F.negate(isGoldMember);
 
 const isNotEligible = data.filter(isNotGoldMember);
 
@@ -362,7 +406,7 @@ console.table(isNotEligible);
 ```
 
 
-## funcifyr.or(fn1, fn2)
+## F.or(fn1, fn2)
 
 Runs two predicate functions on an argument and returns true if one OR the other is true.
 
@@ -379,7 +423,7 @@ const data = [
 const isGoldMember = (member) => member.hasGold;
 const isYearSubscriber = (member) => member.monthsSubscribed === 12;
 
-const isEligible = data.filter( funcifyr.or(isGoldMember, isYearSubscriber) );
+const isEligible = data.filter( F.or(isGoldMember, isYearSubscriber) );
 
 console.table(isEligible);
 // (index)      name                     monthsSubscribed    hasGold
@@ -389,16 +433,16 @@ console.table(isEligible);
 ```
 
 
-## funcifyr.partial(fn, a)
+## F.partial(fn, a)
 
 Creates a copy of a function with a preset first parameter.
 ```javascript
 function greeter(greet, greeting) {
   console.log(`${greet}, ${greeting}`);
 }
-const englishGreet = funcifyr.partial(greeter, 'Hi');
-const spanishGreet = funcifyr.partial(greeter, 'Hola');
-const japaneseGreet = funcifyr.partial(greeter, 'Konnichiwa');
+const englishGreet = F.partial(greeter, 'Hi');
+const spanishGreet = F.partial(greeter, 'Hola');
+const japaneseGreet = F.partial(greeter, 'Konnichiwa');
 
 englishGreet('how are you?'); //=> Hi, how are you?
 spanishGreet('how are you?'); //=> Hola, how are you?
@@ -406,7 +450,7 @@ japaneseGreet('how are you?'); //=> Konnichiwa, how are you?
 ```
 
 
-## funcifyr.pipe(fns)
+## F.pipe(fns)
 
 Runs a function on the passed-in results of another function. Same as compose but function order is reversed.
 ```javascript
@@ -425,13 +469,13 @@ const getInitials = (names) => names.map(name => {
   return firstName[0] + lastName[0];
 });
 
-const pluckInitials = funcifyr.pipe(getNames, getInitials);
+const pluckInitials = F.pipe(getNames, getInitials);
 
 console.log( pluckInitials(data) ); //=> ["SM", "AB", "MG", "HM", "BD"]
 ```
 
 
-## funcifyr.pluck(prop)
+## F.pluck(prop)
 
 Plucks property values from data objects.
 
@@ -461,8 +505,8 @@ const data = [
   }
 ];
 
-const getNames = funcifyr.pluck('name');
-const getEmails = funcifyr.pluck('email');
+const getNames = F.pluck('name');
+const getEmails = F.pluck('email');
 
 const namesFromData = getNames(data);
 const emailsFromData = getEmails(data);
@@ -472,43 +516,43 @@ console.log(emailsFromData); //=> ["gina@gmail.com", "lucy@gmail.com", "al@gmail
 ```
 
 
-## funcifyr.random(min, max)
+## F.random(min, max)
 
 Returns a random number between a minimum number and a maximum number.
 ```javascript
-funcifyr.random(1, 10); //=> 6 // results may vary
-funcifyr.random(50, 200); //=> 121 // results may vary
+F.random(1, 10); //=> 6 // results may vary
+F.random(50, 200); //=> 121 // results may vary
 ```
 
 
-## funcifyr.range(start, end, step)
+## F.range(start, end, step)
 
 Returns an array of numbers ranging from start to stop.
 ```javascript
-funcifyr.range(10); //=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-funcifyr.range(0, 30, 5); //=> [0, 5, 10, 15, 20, 25, 30]
+F.range(10); //=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+F.range(0, 30, 5); //=> [0, 5, 10, 15, 20, 25, 30]
 ```
 
 
-## funcifyr.repeat(str, times)
+## F.repeat(str, times)
 
 Repeats a string a number of times.
 ```javascript
-funcifyr.repeat('hello', 8); //=> "hellohellohellohellohellohellohellohello"
+F.repeat('hello', 8); //=> "hellohellohellohellohellohellohellohello"
 ```
 
 
-## funcifyr.shuffle(arr)
+## F.shuffle(arr)
 
 Randomly shuffles items in an array.
 ```javascript
 // Results may vary
-funcifyr.shuffle([1,2,3,4,5,6,7,8,9]); //=> [5, 9, 8, 2, 1, 7, 6, 3, 4]
-funcifyr.shuffle([1,2,3,4,5,6,7,8,9]); //=> [3, 5, 4, 6, 2, 9, 1, 8, 7]
+F.shuffle([1,2,3,4,5,6,7,8,9]); //=> [5, 9, 8, 2, 1, 7, 6, 3, 4]
+F.shuffle([1,2,3,4,5,6,7,8,9]); //=> [3, 5, 4, 6, 2, 9, 1, 8, 7]
 ```
 
 
-## funcifyr.tally(prop)
+## F.tally(prop)
 
 Returns a tally count object of a specific property value from objects in an array.
 ```javascript
@@ -540,7 +584,7 @@ JSON.stringify(positionTally); //=>
 ```
 
 
-## funcifyr.thenify(value)
+## F.thenify(value)
 
 Creates a sequence of chainable actions.
 ```javascript
@@ -548,19 +592,19 @@ todo
 ```
 
 
-## funcifyr.unique(arr)
+## F.unique(arr)
 
 Takes an array which might have duplicates and returns a new array with all dupes removed.
 ```javascript
 const arrWithDupes = ['a', 1, 1, 'a', 'a', 'b', 2, 'b', 2, 2, 'b', 'c', 3, 3];
 
-const uniqified = funcifyr.unique(arrWithDupes);
+const uniqified = F.unique(arrWithDupes);
 
 console.log(uniqified); //=> ["a", 1, "b", 2, "c", 3]
 ```
 
 
-## funcifyr.when(fnPredicate, fnWhenTrue)
+## F.when(fnPredicate, fnWhenTrue)
 
 Runs a function when the result of a predicate function returns true.
 ```javascript
