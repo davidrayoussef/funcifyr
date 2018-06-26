@@ -58,6 +58,7 @@ F.pluck() // plucks props from objects in an array
 F.random() // returns a random integer
 F.range() // returns a range of numbers
 F.repeat() // repeats a string a number of times
+F.safeGet() // accesses deep properties safely
 F.shuffle() // randomly shuffles items in an array
 F.tally() // returns tally count of a prop value from objects in an array
 F.thenify() // creates a sequence of chainable actions
@@ -282,7 +283,7 @@ const arr = [
   { name: 'Ishtar', age: 33, location: 'New York' },
   { name: 'Zeus', age: 25, location: 'California' },
   { name: 'Venus', age: 27, location: 'New York' },
-  { name: 'Maat', age: 21, location: 'California' },
+  { name: 'Maat', age: 21, location: 'California' }
 ];
 
 const groupByLocation = F.groupBy('location');
@@ -382,7 +383,7 @@ console.log(getsSeniorDiscount); //=> ["Jebediah the Grey", "Methusaleh the Wise
 
 Creates a negate function that returns true if the result is false.
 
-e.g. You want to grab customers that are NOT Gold members and list them as not eligible.
+e.g. You want to grab customers that are NOT Gold members.
 ```javascript
 const data = [
   { name: 'Marty Mcfly', hasGold: true },
@@ -401,7 +402,7 @@ console.table(isNotEligible);
 
 // (index)      name                       hasGold
 // 0            "Jake Jumanji"             false
-// 1            "Frederick Funkhouser"    false
+// 1            "Frederick Funkhouser"     false
 // 2            "Gertrude Gretel"          false
 ```
 
@@ -518,16 +519,17 @@ console.log(emailsFromData); //=> ["gina@gmail.com", "lucy@gmail.com", "al@gmail
 
 ## F.random(min, max)
 
-Returns a random number between a minimum number and a maximum number.
+Returns a random number between a minimum and a maximum number.
 ```javascript
-F.random(1, 10); //=> 6 // results may vary
-F.random(50, 200); //=> 121 // results may vary
+// results may vary
+F.random(1, 10); //=> 6
+F.random(50, 200); //=> 121
 ```
 
 
 ## F.range(start, end, step)
 
-Returns an array of numbers ranging from start to stop.
+Returns an array of numbers ranging from start to stop, with an optional step amount.
 ```javascript
 F.range(10); //=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 F.range(0, 30, 5); //=> [0, 5, 10, 15, 20, 25, 30]
@@ -539,6 +541,23 @@ F.range(0, 30, 5); //=> [0, 5, 10, 15, 20, 25, 30]
 Repeats a string a number of times.
 ```javascript
 F.repeat('hello', 8); //=> "hellohellohellohellohellohellohellohello"
+```
+
+
+## F.safeGet(obj, props)
+
+Accesses deep properties safely. Avoids "TypeError: Cannot read property somePropName of undefined" error.
+```javascript
+const obj = {
+  prop1: {
+    prop2: {
+      prop3: 'The value'
+    }
+  }
+};
+
+F.safeGet(obj, ['prop1', 'prop2', 'prop3']); //=> "The value"
+F.safeGet(obj, ['prop1', 'prop3', 'prop2']); //=> undefined (Doesn't throw TypeError)
 ```
 
 

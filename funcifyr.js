@@ -411,11 +411,26 @@
       },
 
       /**
+       * Accesses deep properties safely. Avoids "TypeError: Cannot read property somePropName of undefined" error.
+       *
+       * safeGet :: (obj, arr) → r 
+       *
+       * @param (obj, props) - An object, and an array of property names to access
+       * @returns The value of the nested property, or undefined if it's inaccessible
+      **/
+      safeGet: function(obj, props) {
+        if (obj === undefined || obj === null) return undefined;
+        if (!props.length) return obj;
+      
+        return funcifyr.safeGet( obj[props[0]], props.slice(1) );
+      },
+
+      /**
        * Randomly shuffles items in an array.
        *
        * shuffle :: (arr) → arr
        *
-       * @param (arr) - An array to be shuffled
+       * @param arr - An array to be shuffled
        * @returns A shuffled array
       **/
       shuffle: function(arr) {
