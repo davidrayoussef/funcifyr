@@ -710,6 +710,44 @@ describe('repeat', () => {
 
 });
 
+describe('safeGet', () => {
+
+  it('should return the correct property value', () => {
+
+    const obj = {
+      prop1: {
+        prop2: {
+          prop3: 'The value'
+        }
+      }
+    };
+
+    const actual = F.safeGet(obj, ['prop1', 'prop2', 'prop3']);
+    const expected = 'The value';
+
+    assert.equal(actual, expected);
+
+  });
+
+  it('should return undefined without throwing', () => {
+
+    const obj = {
+      prop1: {
+        prop2: {
+          prop3: 'The value'
+        }
+      }
+    };
+
+    const actual = F.safeGet(obj, ['prop1', 'nonexistent-prop', 'prop3']);
+    const expected = undefined;
+
+    assert.equal(actual, expected);
+
+  });  
+  
+});
+
 describe('shuffle', () => {
 
   it('should return an array', () => {

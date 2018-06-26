@@ -557,7 +557,7 @@ const obj = {
 };
 
 F.safeGet(obj, ['prop1', 'prop2', 'prop3']); //=> "The value"
-F.safeGet(obj, ['prop1', 'prop3', 'prop2']); //=> undefined (Doesn't throw TypeError)
+F.safeGet(obj, ['prop1', 'nonexistent-prop', 'prop3']); //=> undefined (Doesn't throw TypeError)
 ```
 
 
